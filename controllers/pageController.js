@@ -2,9 +2,12 @@ const db = require("../models");
 
 module.exports = {
   findAll: function(req, res) {
+    console.log("[DEBUG] /api/page controller");
     db.Page.find(req.query)
-      .sort({ date: -1 })
-      .then(dbModel => res.json(dbModel))
+      .then(dbModel => {
+        console.log("[DEBUG] /api/page controller db call");
+        res.json(dbModel);
+      })
       .catch(err => res.status(422).json(err));
   },
   findById: function(req, res) {
