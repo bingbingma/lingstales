@@ -15,12 +15,13 @@ class App extends Component {
           <h2>Welcome to Ling's Tales</h2> */}
           <NavBar />
           <break></break>
-          
+          <p>TEST</p>
           <Carousel />          
         </div>
       </div>
     );
   }
 }
+
 
 export default App;
