@@ -14,13 +14,16 @@ class App extends Component {
           {/* <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to Ling's Tales</h2> */}
           <NavBar />
+
           <break />
 
           <Carousel />
+
         </div>
       </div>
     );
   }
 }
+
 
 export default App;
