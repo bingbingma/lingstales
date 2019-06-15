@@ -13,9 +13,11 @@ class App extends Component {
         <div className="App-header">
    
           <NavBar />
-          <break></break>
-          <p>TEST</p>
-          <Carousel />          
+
+          <break />
+
+          <Carousel />
+
         </div>
       </div>
     );
