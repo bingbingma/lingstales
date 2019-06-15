@@ -14,9 +14,11 @@ class App extends Component {
           {/* <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to Ling's Tales</h2> */}
           <NavBar />
-          <break></break>
-          <p>TEST</p>
-          <Carousel />          
+
+          <break />
+
+          <Carousel />
+
         </div>
       </div>
     );
