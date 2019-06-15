@@ -2,6 +2,8 @@ const express = require("express");
 const path = require("path");
 const PORT = process.env.PORT || 3001;
 const app = express();
+const routes = require("./routes");
+const mongoose = require("mongoose");
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
@@ -12,6 +14,14 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Define API routes here
+
+app.get("/ping", function(req, res) {
+  res.send("pong");
+});
+
+app.use(routes);
+
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/lingstales");
 
 // Send every other request to the React app
 // Define any API routes before this runs
