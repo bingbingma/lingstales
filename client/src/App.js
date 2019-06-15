@@ -11,16 +11,18 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          {/* <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to Ling's Tales</h2> */}
+   
           <NavBar />
-          <break></break>
-          
-          <Carousel />          
+
+          <break />
+
+          <Carousel />
+
         </div>
       </div>
     );
   }
 }
+
 
 export default App;
