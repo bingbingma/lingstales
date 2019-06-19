@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import Carousel from "./components/carousel/carousel";
 import NavBar from "./components/navbar";
+import Home from "./pages/home/home"
 // import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import "./App.css";
@@ -15,8 +15,8 @@ class App extends Component {
           <NavBar />
 
           <break />
-
-          <Carousel />
+          <Home />
+          {/* <Carousel /> */}
 
         </div>
       </div>

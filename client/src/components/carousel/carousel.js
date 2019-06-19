@@ -3,13 +3,10 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slide3 from "../../images/Slide3.JPG";
-import Slide4 from "../../images/Slide4.JPG";
-import Slide5 from "../../images/Slide5.JPG";
-import './carousel.css';
+import "./carousel.css";
 import API from "../../utils/API";
 
-class Carousel extends React.Component{
+class Carousel extends React.Component {
   state = {
     pages: []
   };
@@ -28,7 +25,6 @@ class Carousel extends React.Component{
       .catch(err => console.log(err));
   };
 
-  
   render() {
 
     console.log(this.state.pages);
@@ -40,16 +36,15 @@ class Carousel extends React.Component{
       slidesToScroll: 1,
       centerMode: true,
       arrows: true,
-      autoPlay: false,
+      autoPlay: false
     };
     return (
       <Slider {...settings}>
-        <div>
-{this.state.pages.map(image => (
-  <img src={image.imageUrl} />
-))}
-          {/* <img src={Slide3}/> */}
-        </div>
+        {this.state.pages.map(image => (
+          <div>
+            <img src={image.imageUrl} alt={image.pageNumber} />
+          </div>
+        ))}
       </Slider>
     );
   }
