@@ -12,4 +12,11 @@ router
   .put(pageController.update)
   .delete(pageController.remove);
 
+router.route("/:pid/comments/").post(pageController.createComment);
+
+router
+  .route("/:pid/comments/:cid")
+  .get(pageController.findCommentById)
+  .delete(pageController.removeComment);
+
 module.exports = router;

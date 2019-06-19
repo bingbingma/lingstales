@@ -10,19 +10,16 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-   
+        <div>
           <NavBar />
 
           <break />
 
           <Carousel />
-
         </div>
       </div>
     );
   }
 }
-
 
 export default App;
