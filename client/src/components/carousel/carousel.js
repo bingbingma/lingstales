@@ -19,11 +19,13 @@ class Carousel extends React.Component {
 
   loadPages = () => {
     API.getPages()
-      .then(res =>
+      .then(res => {
+
         this.setState({
           pages: res.data
         })
-      )
+        console.log(res)
+      })
       .catch(err => console.log(err));
   };
 
