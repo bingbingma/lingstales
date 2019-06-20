@@ -53,9 +53,20 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   removeComment: function(req, res) {
-    db.Page.findById({ _id: req.params.id })
-      .then(dbModel => dbModel.remove())
+    const comment = {
+      author: req.body.author,
+      text: req.body.text,
+      date: req.body.date
+    };
+    db.Page.findOneAndUpdate(
+      { page: req.params.id },
+      { $pull: { comment: comment } }
+    )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
+  },
+
+  findCommentById: function(req, res) {
+    db.Page.findById;
   }
 };
