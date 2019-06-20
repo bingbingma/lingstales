@@ -3,11 +3,30 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slide3 from "../../images/Slide3.JPG";
 import Slide4 from "../../images/Slide4.JPG";
 import Slide5 from "../../images/Slide5.JPG";
-import './carousel.css';
-class Carousel extends React.Component{
+import "./carousel.css";
+import API from "../../utils/API";
+
+class Carousel extends React.Component {
+  state = {
+    pages: []
+  };
+
+  componentDidMount() {
+    this.loadPages();
+  }
+
+  loadPages = () => {
+    API.getPages()
+      .then(res =>
+        this.setState({
+          pages: res.data
+        })
+      )
+      .catch(err => console.log(err));
+  };
+
   render() {
     var settings = {
       dots: false,
@@ -22,24 +41,11 @@ class Carousel extends React.Component{
     };
     return (
       <Slider {...settings}>
-        <div>
-          <img src={Slide3}/>
-        </div>
-        <div>
-        <img src={Slide4}/>
-        </div>
-        <div>
-        <img src={Slide5}/>
-        </div>
-        <div>
-          <h3>4</h3>
-        </div>
-        <div>
-          <h3>5</h3>
-        </div>
-        <div>
-          <h3>6</h3>
-        </div>
+        {this.state.pages.map(image => (
+          <div>
+            <img src={image.imageUrl} alt={image.pageNumber} />
+          </div>
+        ))}
       </Slider>
     );
   }
