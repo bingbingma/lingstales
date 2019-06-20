@@ -14,6 +14,7 @@ const pageSeed = [
     imageUrl: "assets/Slide4.JPG",
     comments: [
       {
+        id: 1,
         author: "Test",
         text: "Great start!",
         date: new Date(Date.now())

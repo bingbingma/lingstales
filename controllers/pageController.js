@@ -33,12 +33,13 @@ module.exports = {
 
   //FOR THE COMMENT SECTION
   findAllComments: function(req, res) {
-    db.Page.find(req.query)
+    db.Page.findOne({ pageNumber: number }, { comments: comments })
       .then(dbModel => {
         res.json(dbModel);
       })
       .catch(err => res.status(422).json(err));
   },
+
   createComment: function(req, res) {
     const comment = {
       author: req.body.author,
@@ -52,6 +53,7 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+
   removeComment: function(req, res) {
     const comment = {
       author: req.body.author,
@@ -67,6 +69,24 @@ module.exports = {
   },
 
   findCommentById: function(req, res) {
-    db.Page.findById;
+    db.Page.findOne(
+      { pageNumber: number },
+      { comments: { $elemMatch: { comment_id: req.params.id } } }
+    )
+      .then(dbModel => {
+        res.json(dbModel);
+      })
+      .catch(err => res.status(422).json(err));
+  },
+
+  updateCommentById: function(req, res) {
+    db.Page.findOneAndUpdate(
+      { pageNumber: number },
+      { comments: { $elemMatch: { comment_id: req.params.id } } }
+    )
+      .then(dbModel => {
+        res.json(dbModel);
+      })
+      .catch(err => res.status(422).json(err));
   }
 };

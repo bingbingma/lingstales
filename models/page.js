@@ -6,6 +6,7 @@ const pageSchema = new Schema({
   imageUrl: { type: String, required: true },
   comments: [
     {
+      comment_id: { type: Number, required: true },
       author: { type: String, required: true },
       text: String,
       date: { type: Date, default: Date.now }

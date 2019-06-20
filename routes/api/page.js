@@ -7,7 +7,7 @@ router
   .post(pageController.create);
 
 router
-  .route("/:id")
+  .route("/:pid")
   .get(pageController.findById)
   .put(pageController.update)
   .delete(pageController.remove);
@@ -17,6 +17,7 @@ router.route("/:pid/comments/").post(pageController.createComment);
 router
   .route("/:pid/comments/:cid")
   .get(pageController.findCommentById)
+  .post(pageController.updateCommentById)
   .delete(pageController.removeComment);
 
 module.exports = router;

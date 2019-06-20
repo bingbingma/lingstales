@@ -24,13 +24,42 @@ app.use(routes);
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/lingstales");
 
 // Send every other request to the React app
+
 // Define any API routes before this runs
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
 
+// Show all comments for the page
 app.post("/:pid/comments/", (req, res) => {
-  res.send();
+  res.create(req.body);
+});
+
+// Route to post our form submission to mongoDB via mongoose
+app.post("/submit", function(req, res) {
+  // Create a new user using req.body
+  User.create(req.body)
+    .then(function(dbUser) {
+      res.json(dbUser);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
+//get specific comment by ID
+app.get("/:pid/comments/:cid", (req, res) => {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+});
+
+//Update comment by ID
+app.put("/:pid/comments/:cid", (req, res) => {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+});
+
+//Delete comment by ID
+app.destroy("/:pid/comments/:cid", (req, res) => {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
 
 app.listen(PORT, () => {
