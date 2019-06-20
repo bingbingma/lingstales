@@ -18,6 +18,7 @@ class Carousel extends React.Component{
       centerMode: true,
       arrows: true,
       autoPlay: false,
+      variableWidth: 80
     };
     return (
       <Slider {...settings}>
