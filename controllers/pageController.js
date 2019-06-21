@@ -31,11 +31,11 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  //FOR THE COMMENT SECTION
+  //FOR THE COMMENT SECTIONS
   findAllComments: function(req, res) {
-    db.Page.find({ pageNumber: req.params.id }, { comments: comments })
+    db.Page.find({ pageNumber: req.params.id })
       .then(dbModel => {
-        res.json(dbModel);
+        res.json(dbModel[0].comments);
       })
       .catch(err => res.status(422).json(err));
   },

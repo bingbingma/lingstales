@@ -12,7 +12,10 @@ router
   .put(pageController.update)
   .delete(pageController.remove);
 
-router.route("/:id/comments/").post(pageController.createComment);
+router
+  .route("/:id/comments/")
+  .get(pageController.findAllComments)
+  .post(pageController.createComment);
 
 router
   .route("/:id/comments/:cid")
