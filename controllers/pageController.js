@@ -1,17 +1,16 @@
 const db = require("../models");
 
 module.exports = {
+  //FOR THE PAGES
   findAll: function(req, res) {
-    console.log("[DEBUG] /api/page controller");
     db.Page.find(req.query)
       .then(dbModel => {
-        console.log("[DEBUG] /api/page controller db call");
         res.json(dbModel);
       })
       .catch(err => res.status(422).json(err));
   },
   findById: function(req, res) {
-    db.Page.findById(req.params.id)
+    db.Page.find({ pageNumber: req.params.id })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
@@ -21,14 +20,74 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {
-    db.Page.findOneAndUpdate({ _id: req.params.id }, req.body)
+    db.Page.update({ pageNumber: req.params.id }, req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   remove: function(req, res) {
-    db.Page.findById({ _id: req.params.id })
+    db.Page.find({ pageNumber: req.params.id })
       .then(dbModel => dbModel.remove())
       .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+
+  //FOR THE COMMENT SECTIONS
+  findAllComments: function(req, res) {
+    db.Page.find({ pageNumber: req.params.id })
+      .then(dbModel => {
+        res.json(dbModel[0].comments);
+      })
+      .catch(err => res.status(422).json(err));
+  },
+
+  createComment: function(req, res) {
+    const comment = {
+      author: req.body.author,
+      text: req.body.text,
+      date: req.body.date
+    };
+    console.log(comment);
+    db.Page.update(
+      { pageNumber: req.params.id },
+      { $push: { comments: comment } }
+    )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+
+  removeComment: function(req, res) {
+    const comment = {
+      author: req.body.author,
+      text: req.body.text,
+      date: req.body.date
+    };
+    db.Page.update(
+      { pageNumber: req.params.id },
+      { $pull: { comment: comment } }
+    )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+
+  findCommentById: function(req, res) {
+    db.Page.find(
+      { pageNumber: req.params.id },
+      { comments: { $elemMatch: { _id: req.params.id } } }
+    )
+      .then(dbModel => {
+        res.json(dbModel);
+      })
+      .catch(err => res.status(422).json(err));
+  },
+
+  updateCommentById: function(req, res) {
+    db.Page.update(
+      { pageNumber: req.params.id },
+      { comments: { $elemMatch: { _id: req.params.id } } }
+    )
+      .then(dbModel => {
+        res.json(dbModel);
+      })
       .catch(err => res.status(422).json(err));
   }
 };
