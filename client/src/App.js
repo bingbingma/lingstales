@@ -7,6 +7,8 @@ import CommentList from "./components/CommentList";
 import CommentForm from "./components/CommentForm";
 
 class App extends Component {
+  // constructor for comments
+  
   constructor(props) {
     super(props);
 
@@ -17,7 +19,7 @@ class App extends Component {
 
     this.addComment = this.addComment.bind(this);
   }
-
+// component mounting for comments
   componentDidMount() {
     // loading
     this.setState({ loading: true });
@@ -37,7 +39,7 @@ class App extends Component {
   }
 
   /**
-   * Add new comment
+   * Add new comment section function
    * @param {Object} comment
    */
   addComment(comment) {
@@ -46,16 +48,17 @@ class App extends Component {
       comments: [comment, ...this.state.comments]
     });
   }
-
+// app section
   render() {
     return (
       <div className="App">
         <NavBar />
 
 
+{/* Carousel section*/}
 
         <Carousel />
-
+{/* Comments section*/}
         <div className="App container bg-light shadow" >
           <header className="App-header">
             {/* <img src={logo} className={loadingSpin} alt="logo" /> */}
