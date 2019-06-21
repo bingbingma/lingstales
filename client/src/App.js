@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import Carousel from "./components/carousel/carousel";
 import NavBar from "./components/navbar";
 import "./App.css";
@@ -57,8 +56,6 @@ class App extends Component {
 
         <Carousel />
 
-
-
         <div className="App container bg-light shadow" >
           <header className="App-header">
             {/* <img src={logo} className={loadingSpin} alt="logo" /> */}
@@ -92,8 +89,5 @@ class App extends Component {
       </div>
     );
   }
-
-
 }
-
 export default App;

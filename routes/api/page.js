@@ -12,4 +12,15 @@ router
   .put(pageController.update)
   .delete(pageController.remove);
 
+router
+  .route("/:id/comments/")
+  .get(pageController.findAllComments)
+  .post(pageController.createComment);
+
+router
+  .route("/:id/comments/:cid")
+  .get(pageController.findCommentById)
+  .put(pageController.updateCommentById)
+  .delete(pageController.removeComment);
+
 module.exports = router;
