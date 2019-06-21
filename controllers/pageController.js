@@ -10,7 +10,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   findById: function(req, res) {
-    db.Page.findById(req.params.id)
+    db.Page.find({ pageNumber: req.params.id })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
@@ -20,12 +20,12 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {
-    db.Page.findOneAndUpdate({ _id: req.params.id }, req.body)
+    db.Page.update({ pageNumber: req.params.id }, req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   remove: function(req, res) {
-    db.Page.findById({ _id: req.params.id })
+    db.Page.find({ pageNumber: req.params.id })
       .then(dbModel => dbModel.remove())
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -33,7 +33,7 @@ module.exports = {
 
   //FOR THE COMMENT SECTION
   findAllComments: function(req, res) {
-    db.Page.findOne({ pageNumber: number }, { comments: comments })
+    db.Page.find({ pageNumber: req.params.id }, { comments: comments })
       .then(dbModel => {
         res.json(dbModel);
       })
@@ -46,9 +46,10 @@ module.exports = {
       text: req.body.text,
       date: req.body.date
     };
-    db.Page.findOneAndUpdate(
-      { page: req.params.id },
-      { $push: { comment: comment } }
+    console.log(comment);
+    db.Page.update(
+      { pageNumber: req.params.id },
+      { $push: { comments: comment } }
     )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -60,8 +61,8 @@ module.exports = {
       text: req.body.text,
       date: req.body.date
     };
-    db.Page.findOneAndUpdate(
-      { page: req.params.id },
+    db.Page.update(
+      { pageNumber: req.params.id },
       { $pull: { comment: comment } }
     )
       .then(dbModel => res.json(dbModel))
@@ -69,9 +70,9 @@ module.exports = {
   },
 
   findCommentById: function(req, res) {
-    db.Page.findOne(
-      { pageNumber: number },
-      { comments: { $elemMatch: { comment_id: req.params.id } } }
+    db.Page.find(
+      { pageNumber: req.params.id },
+      { comments: { $elemMatch: { _id: req.params.id } } }
     )
       .then(dbModel => {
         res.json(dbModel);
@@ -80,9 +81,9 @@ module.exports = {
   },
 
   updateCommentById: function(req, res) {
-    db.Page.findOneAndUpdate(
-      { pageNumber: number },
-      { comments: { $elemMatch: { comment_id: req.params.id } } }
+    db.Page.update(
+      { pageNumber: req.params.id },
+      { comments: { $elemMatch: { _id: req.params.id } } }
     )
       .then(dbModel => {
         res.json(dbModel);
