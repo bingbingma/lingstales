@@ -59,28 +59,28 @@ class App extends Component {
 
 
 
-        {/* <div className="App container bg-light shadow" >
-          <header className="App-header"> */}
-        {/* <img src={logo} className={loadingSpin} alt="logo" /> */}
-        {/* <h1 className="App-title">
-              React Comments
+        <div className="App container bg-light shadow" >
+          <header className="App-header">
+            {/* <img src={logo} className={loadingSpin} alt="logo" /> */}
+            <h1 className="App-title">
+              Comments
             <span className="px-2" role="img" aria-label="Chat">
 
               </span>
-            </h1> */}
-        {/* <p>
+            </h1>
+            {/* <p>
               Checkout the tutorial on{" "}
               <a className="text-light" href="https://qcode.in">
                 QCode.in
             </a>
             </p> */}
-        {/* </header>
+          </header>
 
           <div className="row">
             <div className="col-4  pt-3 border-right">
-              <h6>Say something about React</h6>
-              <CommentForm addComment={this.addComment} /> */}
-        {/* </div>
+              <h6>Say something about this page</h6>
+              <CommentForm addComment={this.addComment} />
+            </div>
             <div className="col-8  pt-3 bg-white">
               <CommentList
                 loading={this.state.loading}
@@ -88,7 +88,7 @@ class App extends Component {
               />
             </div>
           </div>
-        </div>*/}
+        </div>
       </div>
     );
   }
