@@ -1,5 +1,5 @@
 import React from "react";
-
+import LoginButton from "./loginbutton";
 class NavBar extends React.Component{
   render(){
   return (
@@ -10,6 +10,7 @@ class NavBar extends React.Component{
     <p>Home</p> 
     <p>Read</p>
     <p>Amazon</p>
+    <LoginButton />
     </header>
   );
 }
