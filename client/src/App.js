@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import Carousel from "./components/carousel/carousel";
 import NavBar from "./components/navbar";
 // import { BrowserRouter as Router, Route } from "react-router-dom";
