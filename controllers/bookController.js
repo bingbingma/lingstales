@@ -1,31 +1,31 @@
 const db = require("../models");
 
 module.exports = {
-  //FOR THE PAGES
+  //FOR THE BOOK
   findAll: function(req, res) {
-    db.Page.find(req.query)
+    db.Book.find(req.query)
       .then(dbModel => {
         res.json(dbModel);
       })
       .catch(err => res.status(422).json(err));
   },
   findById: function(req, res) {
-    db.Page.find({ pageNumber: req.params.id })
+    db.Book.find({ _id: req.params.id })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   create: function(req, res) {
-    db.Page.create(req.body)
+    db.Book.create(req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {
-    db.Page.update({ pageNumber: req.params.id }, req.body)
+    db.Book.update({ _id: req.params.id }, req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   remove: function(req, res) {
-    db.Page.find({ pageNumber: req.params.id })
+    db.Book.find({ _id: req.params.id })
       .then(dbModel => dbModel.remove())
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -33,7 +33,7 @@ module.exports = {
 
   //FOR THE COMMENT SECTIONS
   findAllComments: function(req, res) {
-    db.Page.find({ pageNumber: req.params.id })
+    db.Book.find({ _id: req.params.id })
       .then(dbModel => {
         res.json(dbModel[0].comments);
       })
@@ -47,10 +47,7 @@ module.exports = {
       date: req.body.date
     };
     console.log(comment);
-    db.Page.update(
-      { pageNumber: req.params.id },
-      { $push: { comments: comment } }
-    )
+    db.Book.update({ _id: req.params.id }, { $push: { comments: comment } })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
@@ -61,17 +58,14 @@ module.exports = {
       text: req.body.text,
       date: req.body.date
     };
-    db.Page.update(
-      { pageNumber: req.params.id },
-      { $pull: { comment: comment } }
-    )
+    db.Book.update({ _id: req.params.id }, { $pull: { comment: comment } })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
 
   findCommentById: function(req, res) {
-    db.Page.find(
-      { pageNumber: req.params.id },
+    db.Book.find(
+      { _id: req.params.id },
       { comments: { $elemMatch: { _id: req.params.id } } }
     )
       .then(dbModel => {
@@ -81,8 +75,8 @@ module.exports = {
   },
 
   updateCommentById: function(req, res) {
-    db.Page.update(
-      { pageNumber: req.params.id },
+    db.Book.update(
+      { _id: req.params.id },
       { comments: { $elemMatch: { _id: req.params.id } } }
     )
       .then(dbModel => {
