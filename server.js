@@ -4,10 +4,22 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 const routes = require("./routes");
 const mongoose = require("mongoose");
+var cors = require('cors')
+
+app.use(cors())
+app.options('*', cors());
+
+var bodyParser = require('body-parser')
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+app.use(bodyParser.json())
 
 // Define middleware here
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/lingstales");
 
 // Serve up static assets (usually on heroku)
@@ -16,7 +28,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/lingstales");
 // }
 
 // Define API routes here
-app.get("/ping", function(req, res) {
+app.get("/ping", function (req, res) {
   res.send("pong");
 });
 

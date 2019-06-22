@@ -21,7 +21,7 @@ class Comments_Section extends Component {
         this.setState({ loading: true });
 
         // get all the comments
-        fetch("http://localhost:7777")
+        fetch("http://localhost:3001/api/books/5d0e4a6cf125fa1612b6a5fc/comments")
             .then(res => res.json())
             .then(res => {
                 this.setState({
