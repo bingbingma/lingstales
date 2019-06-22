@@ -3,92 +3,63 @@ import Carousel from "./components/carousel/carousel";
 import NavBar from "./components/navbar";
 import "./App.css";
 
-import CommentList from "./components/CommentList";
-import CommentForm from "./components/CommentForm";
+import Comments_Section from "./components/commentmaster";
 
 class App extends Component {
-  // constructor for comments
-  
-  constructor(props) {
-    super(props);
+  //   // constructor for comments
 
-    this.state = {
-      comments: [],
-      loading: false
-    };
+  //   constructor(props) {
+  //     super(props);
 
-    this.addComment = this.addComment.bind(this);
-  }
-// component mounting for comments
-  componentDidMount() {
-    // loading
-    this.setState({ loading: true });
+  //     this.state = {
+  //       comments: [],
+  //       loading: false
+  //     };
 
-    // get all the comments
-    fetch("http://localhost:7777")
-      .then(res => res.json())
-      .then(res => {
-        this.setState({
-          comments: res,
-          loading: false
-        });
-      })
-      .catch(err => {
-        this.setState({ loading: false });
-      });
-  }
+  //     this.addComment = this.addComment.bind(this);
+  //   }
+  //   // component mounting for comments
+  //   componentDidMount() {
+  //     // loading
+  //     this.setState({ loading: true });
 
-  /**
-   * Add new comment section function
-   * @param {Object} comment
-   */
-  addComment(comment) {
-    this.setState({
-      loading: false,
-      comments: [comment, ...this.state.comments]
-    });
-  }
-// app section
+  //     // get all the comments
+  //     fetch("http://localhost:7777")
+  //       .then(res => res.json())
+  //       .then(res => {
+  //         this.setState({
+  //           comments: res,
+  //           loading: false
+  //         });
+  //       })
+  //       .catch(err => {
+  //         this.setState({ loading: false });
+  //       });
+  //   }
+
+  //   /**
+  //    * Add new comment section function
+  //    * @param {Object} comment
+  //    */
+  //   addComment(comment) {
+  //     this.setState({
+  //       loading: false,
+  //       comments: [comment, ...this.state.comments]
+  //     });
+  //   }
+  // app section
   render() {
     return (
       <div className="App">
         <NavBar />
 
-
-{/* Carousel section*/}
+        {/* Carousel section*/}
 
         <Carousel />
-{/* Comments section*/}
-        <div className="App container bg-light shadow" >
-          <header className="App-header">
-            {/* <img src={logo} className={loadingSpin} alt="logo" /> */}
-            <h1 className="App-title">
-              Comments
-            <span className="px-2" role="img" aria-label="Chat">
+        {/* Comments section*/}
 
-              </span>
-            </h1>
-            {/* <p>
-              Checkout the tutorial on{" "}
-              <a className="text-light" href="https://qcode.in">
-                QCode.in
-            </a>
-            </p> */}
-          </header>
+        <Comments_Section />
 
-          <div className="row">
-            <div className="col-4  pt-3 border-right">
-              <h6>Say something about this page</h6>
-              <CommentForm addComment={this.addComment} />
-            </div>
-            <div className="col-8  pt-3 bg-white">
-              <CommentList
-                loading={this.state.loading}
-                comments={this.state.comments}
-              />
-            </div>
-          </div>
-        </div>
       </div>
     );
   }
