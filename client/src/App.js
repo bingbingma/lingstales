@@ -1,14 +1,16 @@
-import React, { Component } from "react";
+import React from "react";
 import logo from "./logo.svg";
 import Carousel from "./components/carousel/carousel";
 import NavBar from "./components/navbar";
-// import { BrowserRouter as Router, Route } from "react-router-dom";
+import Home from "./components/landingpage/landingpage";
+import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
 
 import "./App.css";
 
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
+      <Router>
       <div className="App">
         <div className="App-header">
    
@@ -16,10 +18,12 @@ class App extends Component {
 
           <break />
 
-          <Carousel />
-
+          <Route exact path="/" component={Carousel}/>
+          <Route exact path="/carousel" component={Carousel}/>
+          
         </div>
       </div>
+      </Router>
     );
   }
 }

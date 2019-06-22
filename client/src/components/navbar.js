@@ -7,7 +7,7 @@ class NavBar extends React.Component{
     <h1>
       Ling's Tales
     </h1>
-    <p>Home</p> 
+    <button>Home</button> 
     <p>Read</p>
     <p>Amazon</p>
     </header>
