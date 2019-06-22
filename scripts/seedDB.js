@@ -3,32 +3,19 @@ const db = require("../models");
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/lingstales");
 
-const pageSeed = [
+const bookSeed = [
   {
-    pageNumber: 1,
-    imageUrl: "assets/Slide3.JPG",
+    bookName: "The Emperor's Seed",
     comments: []
   },
   {
-    pageNumber: 2,
-    imageUrl: "assets/Slide4.JPG",
-    comments: [
-      {
-        author: "Test",
-        text: "Great start!",
-        date: new Date(Date.now())
-      }
-    ]
-  },
-  {
-    pageNumber: 3,
-    imageUrl: "assets/Slide5.JPG",
+    bookName: "Weighing the Elephant",
     comments: []
   }
 ];
 
-db.Page.remove({})
-  .then(() => db.Page.collection.insertMany(pageSeed))
+db.Book.remove({})
+  .then(() => db.Book.collection.insertMany(bookSeed))
   .then(data => {
     console.log(data.result.n + " records inserted!");
     process.exit(0);

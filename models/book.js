@@ -7,12 +7,11 @@ const commentSchema = new Schema({
   date: { type: Date, default: Date.now }
 });
 
-const pageSchema = new Schema({
-  pageNumber: { type: Number, required: true },
-  imageUrl: { type: String, required: true },
+const bookSchema = new Schema({
+  bookName: { type: String, required: true },
   comments: [commentSchema]
 });
 
-const Page = mongoose.model("Page", pageSchema);
+const Book = mongoose.model("Book", bookSchema);
 
-module.exports = Page;
+module.exports = Book;
