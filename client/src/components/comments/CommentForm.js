@@ -50,7 +50,7 @@ export default class CommentForm extends Component {
 
     // persist the comments on server
     let { comment } = this.state;
-    fetch("http://localhost:7777", {
+    fetch("http://localhost:3001/api/books/5d0e4a6cf125fa1612b6a5fc/comments", {
       method: "post",
       body: JSON.stringify(comment)
     })
@@ -94,7 +94,7 @@ export default class CommentForm extends Component {
   render() {
     return (
       <React.Fragment>
-        <form method="post" onSubmit={this.onSubmit}>
+        <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <input
               onChange={this.handleFieldChange}
