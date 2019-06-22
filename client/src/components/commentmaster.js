@@ -65,7 +65,7 @@ class Comments_Section extends Component {
 
                 <div className="row">
                     <div className="col-4  pt-3 border-right">
-                        <h6>Say something about this page</h6>
+                        <h6>Say something about this book!</h6>
                         <CommentForm addComment={this.addComment} />
                     </div>
                     <div className="col-8  pt-3 bg-white">
