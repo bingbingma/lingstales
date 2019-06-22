@@ -8,8 +8,9 @@ export default class CommentForm extends Component {
       error: "",
 
       comment: {
-        name: "",
-        message: ""
+        author: "",
+        text: "",
+        date: ""
       }
     };
 
@@ -18,28 +19,20 @@ export default class CommentForm extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  /**
-   * Handle form input field changes & update the state
-   */
   handleFieldChange = event => {
-    const { value, name } = event.target;
-
+    const { value, author } = event.target;
     this.setState({
       ...this.state,
       comment: {
         ...this.state.comment,
-        [name]: value
+        [author]: value
       }
     });
   };
 
-  /**
-   * Form submit handler
-   */
   onSubmit(e) {
     // prevent default form submission
     e.preventDefault();
-
     if (!this.isFormValid()) {
       this.setState({ error: "All fields are required." });
       return;
@@ -54,13 +47,13 @@ export default class CommentForm extends Component {
       author: comment.name,
       text: comment.message,
       date: new Date()
-    }
+    };
     fetch("http://localhost:3001/api/books/5d0e4a6cf125fa1612b6a5fc/comments", {
       method: "POST",
-      mode: 'cors', // no-cors, cors, *same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json"
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: JSON.stringify(payload)
@@ -77,7 +70,7 @@ export default class CommentForm extends Component {
           // clear the message box
           this.setState({
             loading: false,
-            comment: { ...comment, message: "" }
+            comment: { ...comment, text: "" }
           });
         }
       })
@@ -89,11 +82,8 @@ export default class CommentForm extends Component {
       });
   }
 
-  /**
-   * Simple validation
-   */
   isFormValid() {
-    return this.state.comment.name !== "" && this.state.comment.message !== "";
+    return this.state.comment.author !== "" && this.state.comment.text !== "";
   }
 
   renderError() {
@@ -109,10 +99,10 @@ export default class CommentForm extends Component {
           <div className="form-group">
             <input
               onChange={this.handleFieldChange}
-              value={this.state.comment.name}
+              value={this.state.comment.author}
               className="form-control"
               placeholder="😎 Your Name"
-              name="name"
+              name="author"
               type="text"
             />
           </div>
@@ -120,10 +110,10 @@ export default class CommentForm extends Component {
           <div className="form-group">
             <textarea
               onChange={this.handleFieldChange}
-              value={this.state.comment.message}
+              value={this.state.comment.text}
               className="form-control"
               placeholder="🤬 Your Comment"
-              name="message"
+              name="text"
               rows="5"
             />
           </div>

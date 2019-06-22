@@ -5,36 +5,28 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./carousel.css";
 import API from "../../utils/API";
-import pageImages from '../../images';
-
-
+import pageImages from "../../images";
 
 class Carousel extends React.Component {
-
-    state = {
-      pages: []
-    };
-    
-    
-
-
+  state = {
+    pages: []
+  };
 
   componentDidMount() {
-    console.log("[DEBUG] image hack", pageImages)
+    console.log("[DEBUG] image hack", pageImages);
   }
 
-  loadPages = () => {
-    API.getPages()
+  loadBook = () => {
+    API.getBook()
       .then(res => {
-
         this.setState({
-          pages: res.data
-        })
-        console.log(res)
+          book: res.data
+        });
+        console.log(res);
       })
       .catch(err => console.log(err));
   };
-//concactenates into a URL
+  //concactenates into a URL
   // getImageUrl(index) {
   //   return "../../images/Slide" + index + ".JPG";
   // };
@@ -46,20 +38,26 @@ class Carousel extends React.Component {
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      centerMode: true,
       arrows: true,
-      autoPlay: false
+      autoPlay: false,
+      infinite: true,
+      fade: true,
+      cssEase: "linear"
     };
+
     return (
-      <Slider {...this.settings}>
-        {pageImages.map((imageSrc) => <div><img src={imageSrc}/></div>)}
+      <Slider {...settings}>
+        {pageImages.map(imageSrc => (
+          <div>
+            <img src={imageSrc} />
+          </div>
+        ))}
       </Slider>
     );
   }
 }
 
 export default Carousel;
-
 
 // COMMENT BACKEND LINKS WHICH I PULLED OUT BECAUSE I DIDN"T KNOW HOW TO USE - DAVID
 //         {/* {this.state.pages.map(image => (
