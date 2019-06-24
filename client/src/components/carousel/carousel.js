@@ -1,75 +1,75 @@
-// TEST COMMENT
 import React from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import "./carousel.css";
-import API from "../../utils/API";
-import pageImages from '../../images';
+import Carousel from 'react-bootstrap/Carousel';
+import forwardRef from '@restart/context/forwardRef';
 
+class ControlledCarousel extends React.Component {
+  constructor(props, context) {
+    super(props, context);
 
+    this.handleSelect = this.handleSelect.bind(this);
 
-class Carousel extends React.Component {
-
-    state = {
-      pages: []
+    this.state = {
+      index: 0,
+      direction: null,
     };
-    
-    
-
-
-
-  componentDidMount() {
-    console.log("[DEBUG] image hack", pageImages)
   }
 
-  loadPages = () => {
-    API.getPages()
-      .then(res => {
-
-        this.setState({
-          pages: res.data
-        })
-        console.log(res)
-      })
-      .catch(err => console.log(err));
-  };
-//concactenates into a URL
-  // getImageUrl(index) {
-  //   return "../../images/Slide" + index + ".JPG";
-  // };
+  handleSelect(selectedIndex, e) {
+    this.setState({
+      index: selectedIndex,
+      direction: e.direction,
+    });
+  }
 
   render() {
-    const settings = {
-      dots: false,
-      infinite: false,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      centerMode: true,
-      arrows: true,
-      autoPlay: false
-    };
+    const { index, direction } = this.state;
+
     return (
-      <Slider {...this.settings}>
-        {pageImages.map((imageSrc) => <div><img src={imageSrc}/></div>)}
-      </Slider>
+      <Carousel
+        activeIndex={index}
+        direction={direction}
+        onSelect={this.handleSelect}
+      >
+        <Carousel.Item>
+          <img
+            className="d-block w-100"
+            src="holder.js/800x400?text=First slide&bg=373940"
+            alt="First slide"
+          />
+          <Carousel.Caption>
+            <h3>First slide label</h3>
+            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            className="d-block w-100"
+            src="holder.js/800x400?text=Second slide&bg=282c34"
+            alt="Third slide"
+          />
+
+          <Carousel.Caption>
+            <h3>Second slide label</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            className="d-block w-100"
+            src="holder.js/800x400?text=Third slide&bg=20232a"
+            alt="Third slide"
+          />
+
+          <Carousel.Caption>
+            <h3>Third slide label</h3>
+            <p>
+              Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+            </p>
+          </Carousel.Caption>
+        </Carousel.Item>
+      </Carousel>
     );
   }
 }
 
-export default Carousel;
-
-
-// COMMENT BACKEND LINKS WHICH I PULLED OUT BECAUSE I DIDN"T KNOW HOW TO USE - DAVID
-//         {/* {this.state.pages.map(image => (
-//           <div>
-//             <img src={image.imageUrl} alt={image.pageNumber} />
-//           </div>
-//         ))} */}
-//         <div>
-//         {/* for (var {i}=0;i<{Pictures.length})
-//         <div>
-// //         <img src={Slide14}/>
-// //         </div>
-//         </div> */}
+export default ControlledCarousel;

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import Carousel from "./components/carousel/carousel";
+import ControlledCarousel from "./components/carousel/carousel";
 import NavBar from "./components/navbar";
 import "./App.css";
 
 import Comments_Section from "./components/commentmaster";
+import forwardRef from '@restart/context/forwardRef'
 
 class App extends Component {
   //   // constructor for comments
@@ -55,7 +56,7 @@ class App extends Component {
 
         {/* Carousel section*/}
 
-        <Carousel />
+        <ControlledCarousel />
         {/* Comments section*/}
 
         <Comments_Section />
