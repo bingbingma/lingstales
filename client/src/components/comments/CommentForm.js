@@ -50,9 +50,20 @@ export default class CommentForm extends Component {
 
     // persist the comments on server
     let { comment } = this.state;
+    let payload = {
+      author: comment.name,
+      text: comment.message,
+      date: new Date()
+    }
     fetch("http://localhost:3001/api/books/5d0e4a6cf125fa1612b6a5fc/comments", {
-      method: "post",
-      body: JSON.stringify(comment)
+      method: "POST",
+      mode: 'cors', // no-cors, cors, *same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      headers: {
+        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify(payload)
     })
       .then(res => res.json())
       .then(res => {
