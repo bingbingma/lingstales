@@ -19,6 +19,25 @@ export default class CommentForm extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  // When the component mounts, load all books and save them to this.state.books
+  componentDidMount() {
+    this.loadComments();
+  }
+
+  // Loads all books  and sets them to this.state.books
+  loadComments = () => {
+    API.getComments()
+      .then(res =>
+        this.setState({
+          comments: res.data,
+          title: "",
+          author: "",
+          synopsis: ""
+        })
+      )
+      .catch(err => console.log(err));
+  };
+
   handleFieldChange = event => {
     const { value, author } = event.target;
     this.setState({
