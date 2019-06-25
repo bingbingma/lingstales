@@ -1,4 +1,5 @@
 import React from "react";
+import LoginButton from "./loginbutton/loginbutton";
 
 class NavBar extends React.Component {
   render() {
@@ -53,8 +54,9 @@ class NavBar extends React.Component {
               tabindex="-1"
               aria-disabled="true"
             >
-              Login
+               <LoginButton />
             </a>
+           
           </div>
         </div>
       </nav>
