@@ -1,5 +1,3 @@
-//this is the backend to track which page things are on
-
 import axios from "axios";
 
 export default {
@@ -7,13 +5,17 @@ export default {
   getBooks: function() {
     return axios.get("/api/books");
   },
-  // Gets the page with the given id
+  // Gets a specific book
   getBook: function(id) {
     return axios.get("/api/books/" + id);
   },
-  //Gets all comments for the book
+  //Gets all comments for specific book
   getComments: function(id) {
     return axios.get("/api/books/" + id + "/comments");
+  },
+  // Deletes specific comment
+  deleteComment: function(id, cid) {
+    return axios.delete("/api/books/" + id + "/comments/" + cid);
   },
   // Deletes the book with the given id
   deleteBook: function(id) {

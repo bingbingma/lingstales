@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import API from "../../utils/API";
 
 export default class CommentForm extends Component {
   constructor(props) {
@@ -19,7 +20,6 @@ export default class CommentForm extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  // When the component mounts, load all books and save them to this.state.books
   componentDidMount() {
     this.loadComments();
   }
@@ -27,24 +27,21 @@ export default class CommentForm extends Component {
   // Loads all books  and sets them to this.state.books
   loadComments = () => {
     API.getComments()
-      .then(res =>
-        this.setState({
-          comments: res.data,
-          title: "",
-          author: "",
-          synopsis: ""
-        })
-      )
+      .then(res => {
+        this.setState({ comments: res.data });
+        console.log(res.data);
+      })
       .catch(err => console.log(err));
   };
 
   handleFieldChange = event => {
-    const { value, author } = event.target;
+    const { value, name } = event.target;
+    console.log("[DEBUG] handling form change", value, name);
     this.setState({
       ...this.state,
       comment: {
         ...this.state.comment,
-        [author]: value
+        [name]: value
       }
     });
   };

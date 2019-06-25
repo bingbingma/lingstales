@@ -2,7 +2,6 @@ import React from "react";
 import Comment from "./Comment";
 
 export default function CommentList(props) {
-  console.log("DEBUG!!!!!", props.comments);
   return (
     <div className="commentList">
       <h5 className="text-muted mb-4">
@@ -16,9 +15,10 @@ export default function CommentList(props) {
         </div>
       ) : null}
 
-      {Array.isArray(props.comment) && props.comments.map((comment, index) => (
-        <Comment key={index} comment={comment} />
-      ))}
+      {Array.isArray(props.comments) &&
+        props.comments.map((comment, index) => (
+          <Comment key={index} comment={comment} />
+        ))}
     </div>
   );
 }
