@@ -36,7 +36,6 @@ export default class CommentForm extends Component {
 
   handleFieldChange = event => {
     const { value, name } = event.target;
-    console.log("[DEBUG] handling form change", value, name);
     this.setState({
       ...this.state,
       comment: {

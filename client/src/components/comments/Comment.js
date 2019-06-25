@@ -2,7 +2,6 @@ import React from "react";
 
 export default function Comment(props) {
   const { author, text, date } = props.comment;
-  console.log("[DEBUG] comment component", props.comment);
   return (
     <div className="media mb-3">
       <img
