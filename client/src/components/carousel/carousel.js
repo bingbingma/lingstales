@@ -1,73 +1,56 @@
 // TEST COMMENT
 import React from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import {Carousel, Container, Row, Col} from 'react-bootstrap';
+// import Carousel from 'react-bootstrap/Carousel'
+// import Container from 'react-bootstrap/Container'
 import "./carousel.css";
 import API from "../../utils/API";
-import pageImages from "../../images";
 
-class Carousel extends React.Component {
-  state = {
-    pages: []
-  };
+import pageImages from '../../images';
 
-  componentDidMount() {
-    console.log("[DEBUG] image hack", pageImages);
+
+class ControlledCarousel extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.handleSelect = this.handleSelect.bind(this);
+
+    this.state = {
+      index: 0,
+      direction: null,
+    };
   }
 
-  loadBook = () => {
-    API.getBook()
-      .then(res => {
-        this.setState({
-          book: res.data
-        });
-        console.log(res);
-      })
-      .catch(err => console.log(err));
-  };
-  //concactenates into a URL
-  // getImageUrl(index) {
-  //   return "../../images/Slide" + index + ".JPG";
-  // };
+  handleSelect(selectedIndex, e) {
+    this.setState({
+      index: selectedIndex,
+      direction: e.direction,
+    });
+  }
 
   render() {
-    const settings = {
-      dots: false,
-      infinite: false,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      arrows: true,
-      autoPlay: false,
-      infinite: true,
-      fade: true,
-      cssEase: "linear"
-    };
+    const { index, direction } = this.state;
 
     return (
-      <Slider {...settings}>
-        {pageImages.map(imageSrc => (
-          <div>
-            <img src={imageSrc} />
-          </div>
-        ))}
-      </Slider>
+      <Container>
+  <Row>
+    <Col sm={1}></Col>
+    <Col sm={10}>        <Carousel 
+        activeIndex={index}
+        direction={direction}
+        onSelect={this.handleSelect}
+        interval={null}>
+          
+    {pageImages.map((imageSrc) => <Carousel.Item>
+      <img className="d-block w-100" src={imageSrc} alt="Image" bsClass="carousel-image"/>
+      </Carousel.Item>)}
+      </Carousel></Col>
+    <Col sm={1}></Col>
+  </Row>
+</Container>
+
     );
   }
 }
 
-export default Carousel;
 
-// COMMENT BACKEND LINKS WHICH I PULLED OUT BECAUSE I DIDN"T KNOW HOW TO USE - DAVID
-//         {/* {this.state.pages.map(image => (
-//           <div>
-//             <img src={image.imageUrl} alt={image.pageNumber} />
-//           </div>
-//         ))} */}
-//         <div>
-//         {/* for (var {i}=0;i<{Pictures.length})
-//         <div>
-// //         <img src={Slide14}/>
-// //         </div>
-//         </div> */}
