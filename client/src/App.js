@@ -8,13 +8,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        {/* NavBar section*/}
         <NavBar />
-
         {/* Carousel section*/}
-
         <ControlledCarousel />
         {/* Comments section*/}
-
         <Comments_Section />
       </div>
     );
