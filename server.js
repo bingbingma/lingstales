@@ -23,9 +23,9 @@ app.use(bodyParser.json())
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/lingstales");
 
 // Serve up static assets (usually on heroku)
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static("client/build"));
-// }
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
 
 // Define API routes here
 app.get("/ping", function (req, res) {
