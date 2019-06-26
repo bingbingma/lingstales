@@ -5,6 +5,7 @@ import {Carousel, Container, Row, Col} from 'react-bootstrap';
 // import Container from 'react-bootstrap/Container'
 import "./carousel.css";
 import API from "../../utils/API";
+
 import pageImages from '../../images';
 
 
@@ -47,8 +48,9 @@ class ControlledCarousel extends React.Component {
     <Col sm={1}></Col>
   </Row>
 </Container>
+
     );
   }
 }
 
-export default ControlledCarousel;
+
