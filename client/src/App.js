@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import ControlledCarousel from "./components/carousel/carousel";
 import NavBar from "./components/navbar";
 import "./App.css";
-
 import Comments_Section from "./components/commentmaster";
 
 class App extends Component {

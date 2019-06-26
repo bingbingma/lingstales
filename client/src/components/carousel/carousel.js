@@ -1,6 +1,8 @@
 // TEST COMMENT
 import React from "react";
-import Carousel from 'react-bootstrap/Carousel'
+import {Carousel, Container, Row, Col} from 'react-bootstrap';
+// import Carousel from 'react-bootstrap/Carousel'
+// import Container from 'react-bootstrap/Container'
 import "./carousel.css";
 import API from "../../utils/API";
 import pageImages from '../../images';
@@ -29,7 +31,10 @@ class ControlledCarousel extends React.Component {
     const { index, direction } = this.state;
 
     return (
-        <Carousel 
+      <Container>
+  <Row>
+    <Col sm={1}></Col>
+    <Col sm={10}>        <Carousel 
         activeIndex={index}
         direction={direction}
         onSelect={this.handleSelect}
@@ -38,7 +43,10 @@ class ControlledCarousel extends React.Component {
     {pageImages.map((imageSrc) => <Carousel.Item>
       <img className="d-block w-100" src={imageSrc} alt="Image" bsClass="carousel-image"/>
       </Carousel.Item>)}
-      </Carousel>
+      </Carousel></Col>
+    <Col sm={1}></Col>
+  </Row>
+</Container>
     );
   }
 }
