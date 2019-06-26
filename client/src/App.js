@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Carousel from "./components/carousel/carousel";
+import ControlledCarousel from "./components/carousel/carousel";
 import NavBar from "./components/navbar";
 import "./App.css";
 
@@ -55,7 +55,7 @@ class App extends Component {
 
         {/* Carousel section*/}
 
-        <Carousel />
+        <ControlledCarousel />
         {/* Comments section*/}
 
         <Comments_Section />

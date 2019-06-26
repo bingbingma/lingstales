@@ -1,23 +1,12 @@
-.slick-prev:hover, .slick-prev:focus, .slick-next:hover, .slick-next:focus {
-    color: transparent;
-    outline: none;
-    background:gray !important;
-}
+.carousel-control-next-icon {
+    color: black
+};
 
-.slick-prev, .slick-next {
-    font-size: 0;
-    line-height: 0;
-    position: absolute;
-    top: 50%;
-    display: block;
-    width: 30px;
-    height: 30px;
-    padding: 0;
-    -webkit-transform: translate(0, -50%);
-    transform: translate(0, -50%);
-    cursor: pointer;
-    color:transparent;
-    border: none;
-    outline: none;
-    background: black !important;
-}
+.carousel-control-prev-icon {
+    color: black
+};
+
+* {
+    margin: 25%;
+};
+
