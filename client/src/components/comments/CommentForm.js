@@ -34,6 +34,12 @@ export default class CommentForm extends Component {
       .catch(err => console.log(err));
   };
 
+  deleteComment = id => {
+    API.deleteComment(id)
+      .then(res => this.loadComments())
+      .catch(err => console.log(err));
+  };
+
   handleFieldChange = event => {
     const { value, name } = event.target;
     this.setState({
@@ -59,8 +65,8 @@ export default class CommentForm extends Component {
     // persist the comments on server
     let { comment } = this.state;
     let payload = {
-      author: comment.name,
-      text: comment.message,
+      author: comment.author,
+      text: comment.text,
       date: new Date()
     };
     fetch("http://localhost:3001/api/books/5d0e4a6cf125fa1612b6a5fc/comments", {

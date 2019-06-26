@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import CommentList from "./comments/CommentList";
 import CommentForm from "./comments/CommentForm";
+import DeleteBtn from "./deleteButton";
 
 class Comments_Section extends Component {
   // constructor for comments

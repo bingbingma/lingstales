@@ -1,7 +1,8 @@
 import React from "react";
+import moment from "moment";
 
 export default function Comment(props) {
-  const { author, text, date } = props.comment;
+  const { _id, author, text, date } = props.comment;
   return (
     <div className="media mb-3">
       <img
@@ -13,9 +14,11 @@ export default function Comment(props) {
       />
 
       <div className="media-body p-2 shadow-sm rounded bg-light border">
-        <small className="float-right text-muted">{date}</small>
-        <h6 className="mt-0 mb-1 text-muted">{author}</h6>
-        {text}
+        <small className="float-right text-muted">
+          {moment(date).format("MM/DD/YYYY, h:mm a")}
+        </small>
+        <h6 className="mt-0 mb-1 text-muted text-left">{author}</h6>
+        <h6 className="mt-0 mb-1 text-left">{text}</h6>
       </div>
     </div>
   );
