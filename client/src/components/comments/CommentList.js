@@ -2,10 +2,9 @@ import React from "react";
 import Comment from "./Comment";
 
 export default function CommentList(props) {
-  console.log("DEBUG!!!!!", props.comments);
   return (
     <div className="commentList">
-      <h5 className="text-muted mb-4">
+      <h5 className="text-muted">
         <span className="badge badge-success">{props.comments.length}</span>{" "}
         Comment{props.comments.length > 0 ? "s" : ""}
       </h5>
@@ -16,9 +15,10 @@ export default function CommentList(props) {
         </div>
       ) : null}
 
-      {Array.isArray(props.comment) && props.comments.map((comment, index) => (
-        <Comment key={index} comment={comment} />
-      ))}
+      {Array.isArray(props.comments) &&
+        props.comments.map((comment, index) => (
+          <Comment key={index} comment={comment} />
+        ))}
     </div>
   );
 }
