@@ -12,7 +12,7 @@ export default function CommentList(props) {
 
       {Array.isArray(props.comments) &&
         props.comments.map((comment, index) => (
-          <Comment key={index} comments={comment} />
+          <Comment key={index} comment={comment} />
         ))}
     </div>
   );
