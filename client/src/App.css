@@ -1,3 +1,15 @@
 .App {
   text-align: center;
 }
+.Comment {
+  margin-top: 40px;
+}
+.Comment-title {
+  padding-top: 30px;
+}
+
+.btn-custom {
+  color: white;
+  background: rgb(237, 59, 75);
+  border-width: 0 1px 1px 1px;
+}

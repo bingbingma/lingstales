@@ -46,20 +46,25 @@ class Comments_Section extends Component {
   }
   render() {
     return (
-      <div className="App container bg-light">
-        <header className="App-header">
-          <h4 className="App-title">
+      <div className="Comment container border-top">
+        <header className="Comment-header">
+          <h5 className="Comment-title text-left">
             Comments
+            <span className="badge badge-success">
+              {this.state.comments.length}
+            </span>
             <span className="px-2" role="img" aria-label="Chat" />
-          </h4>
+          </h5>
         </header>
 
         <div className="row">
-          <div className="col-4  pt-3 border-right">
-            <h6>Say something about this book!</h6>
+          <div className="col-12">
+            <h6 className="text-left">Say something about this book!</h6>
             <CommentForm addComment={this.addComment} />
           </div>
-          <div className="col-8  pt-3 bg-white">
+        </div>
+        <div className="row">
+          <div className="col-12">
             <CommentList
               loading={this.state.loading}
               comments={this.state.comments}
