@@ -69,7 +69,7 @@ export default class CommentForm extends Component {
       text: comment.text,
       date: new Date()
     };
-    fetch("http://localhost:3001/api/books/5d0e4a6cf125fa1612b6a5fc/comments", {
+    fetch("http://localhost:3001/api/books/5d12c2f900e9a02cd22e4806/comments", {
       method: "POST",
       mode: "cors", // no-cors, cors, *same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
