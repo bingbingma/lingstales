@@ -41,12 +41,13 @@ module.exports = {
   },
 
   createComment: function (req, res) {
+    
     const comment = {
       author: req.body.author,
       text: req.body.text,
       date: req.body.date
     };
-    console.log(comment, req.body);
+    console.log("[DEBUG] POST /api/books/:bid/comments", comment);
     db.Book.update({ _id: req.params.id }, { $push: { comments: comment } })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
