@@ -69,7 +69,8 @@ export default class CommentForm extends Component {
       text: comment.text,
       date: new Date()
     };
-    fetch("http://localhost:3001/api/books/5d0e4a6cf125fa1612b6a5fc/comments", {
+    const bookId = process.env.NODE_ENV === 'development' ? "5d154769fe5bcb2b9c95c201" : "PROD BOOK ID"
+    fetch(`http://localhost:3001/api/books/${bookId}/comments`, {
       method: "POST",
       mode: "cors", // no-cors, cors, *same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -114,6 +115,7 @@ export default class CommentForm extends Component {
   }
 
   render() {
+    console.log("[DEBUG] check env", process.env.NODE_ENV)
     return (
       <React.Fragment>
         <form onSubmit={this.onSubmit}>
