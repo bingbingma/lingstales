@@ -14,17 +14,23 @@ class Home extends Component {
             <div className="col-12">
               <h1 className="App-title">Ling's Tales</h1>
             </div>
-            <div className="col-12">
-              <h4 className="App-subtitle">
-                View the complete collection below!
-              </h4>
+            <div className="col-12 App-description">
+              <p>
+                This website features a book series set in ancient China
+                involving the main character Ling. The Ling's Tales series
+                feature bilingual books, with English and Simplified Chinese +
+                Pinyin for pronunciation. I illustrated and wrote the story from
+                my childhood memory of the folktale. My wife, Stacy, adapted and
+                translated the Chinese version. You can read the full books for
+                free online, or buy print copies on Amazon. David
+              </p>
             </div>
           </div>
         </div>
         {/* <!-- bootstrap NEW version -->
       <!-- FIRST ROW --> */}
         <div className="row">
-          <div className="col-sm-4">
+          <div className="col-md-4 col-lg-4 col-sm-12 col-12">
             <div className="card">
               <div className="card-body">
                 <img className="img-fluid" src={image1} alt="Book 1" />
@@ -35,7 +41,7 @@ class Home extends Component {
               </div>
             </div>
           </div>
-          <div className="col-sm-4">
+          <div className="col-md-4 col-lg-4 col-sm-12 col-12">
             <div className="card">
               <div className="card-body">
                 <img className="img-fluid" src={image2} alt="Book 2" />
@@ -46,7 +52,7 @@ class Home extends Component {
               </div>
             </div>
           </div>
-          <div className="col-sm-4">
+          <div className="col-md-4 col-lg-4 col-sm-12 col-12">
             <div className="card">
               <div className="card-body">
                 <img className="img-fluid" src={image3} alt="Book 3" />

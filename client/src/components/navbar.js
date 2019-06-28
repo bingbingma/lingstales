@@ -21,9 +21,6 @@ class NavBar extends React.Component {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav">
-            <a className="nav-item nav-link text-right" href="/about">
-              About
-            </a>
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
@@ -44,6 +41,14 @@ class NavBar extends React.Component {
                   Weighing the Elephant (coming soon)
                 </a>
               </div>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="https://www.amazon.com/dp/107422633X/ref=cm_sw_r_tw_dp_U_x_GpxfDbZDFJAMT"
+              >
+                Amazon
+              </a>
             </li>
             <a
               className="nav-item nav-link"
