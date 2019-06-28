@@ -44,6 +44,7 @@ class Comments_Section extends Component {
       comments: [comment, ...this.state.comments]
     });
   }
+
   render() {
     return (
       <div className="Comment container border-top">
@@ -58,13 +59,13 @@ class Comments_Section extends Component {
         </header>
 
         <div className="row">
-          <div className="col-12">
+          <div className="col-12 col-md-4 col-lg-4 pt-3 border-right">
             <h6 className="text-left">Say something about this book!</h6>
             <CommentForm addComment={this.addComment} />
           </div>
         </div>
         <div className="row">
-          <div className="col-12">
+          <div className="col-12 col-md-8 col-lg-8 pt-3 bg-white">
             <CommentList
               loading={this.state.loading}
               comments={this.state.comments}

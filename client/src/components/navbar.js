@@ -4,12 +4,12 @@ import LoginButton from "./loginbutton/loginbutton";
 class NavBar extends React.Component {
   render() {
     return (
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <a className="navbar-brand" href="/">
           Ling's Tales
         </a>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-toggle="collapse"
           data-target="#navbarNavAltMarkup"
@@ -17,19 +17,16 @@ class NavBar extends React.Component {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon" />
+          <span className="navbar-toggler-icon" />
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-item nav-link active text-right" href="#">
-              Home <span class="sr-only">(current)</span>
-            </a>
-            <a class="nav-item nav-link text-right" href="#">
+        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div className="navbar-nav">
+            <a className="nav-item nav-link text-right" href="/about">
               About
             </a>
-            <li class="nav-item dropdown">
+            <li className="nav-item dropdown">
               <a
-                class="nav-link dropdown-toggle"
+                className="nav-link dropdown-toggle"
                 href="#"
                 id="navbarDropdown"
                 role="button"
@@ -39,41 +36,28 @@ class NavBar extends React.Component {
               >
                 Read
               </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">
+              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a className="dropdown-item" href="/books">
                   The Emperor's Seed
                 </a>
-                <a class="dropdown-item disabled" href="#">
+                <a className="dropdown-item disabled" href="#">
                   Weighing the Elephant (coming soon)
                 </a>
               </div>
             </li>
             <a
-              class="nav-item nav-link text-right"
+              className="nav-item nav-link"
               href="#"
               tabindex="-1"
               aria-disabled="true"
             >
-               <LoginButton />
+              <LoginButton />
             </a>
-           
           </div>
         </div>
       </nav>
     );
   }
 }
-
-const headerStyle = {
-  background: "#BE2625",
-  color: "#fff",
-  textAlign: "left",
-  padding: "10px"
-};
-
-// const linkStyle = {
-//   color: "#fff",
-//   textDecoration: "none"
-// };
 
 export default NavBar;
