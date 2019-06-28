@@ -20,6 +20,10 @@ export default class CommentForm extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+    componentDidMount() {
+    this.loadComments();
+  }
+
   // Loads all books  and sets them to this.state.books
   loadComments = (bookID) => {
     API.getComments(bookID)
@@ -129,14 +133,14 @@ export default class CommentForm extends Component {
               className="form-control"
               placeholder="🤬 Your Comment"
               name="text"
-              rows="5"
+              rows="3"
             />
           </div>
 
           {this.renderError()}
 
-          <div className="form-group">
-            <button disabled={this.state.loading} className="btn btn-primary">
+          <div className="form-group text-left">
+            <button disabled={this.state.loading} className="btn btn-custom">
               Comment &#10148;
             </button>
           </div>
