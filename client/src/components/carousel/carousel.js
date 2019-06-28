@@ -31,8 +31,8 @@ class ControlledCarousel extends React.Component {
     return (
       <Container>
         <Row>
-          <Col sm={1} />
-          <Col sm={10}>
+          <Col sm={2} />
+          <Col sm={8}>
             {" "}
             <Carousel
               activeIndex={index}
@@ -52,7 +52,7 @@ class ControlledCarousel extends React.Component {
               ))}
             </Carousel>
           </Col>
-          <Col sm={1} />
+          <Col sm={2} />
         </Row>
       </Container>
     );
