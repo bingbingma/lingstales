@@ -70,7 +70,8 @@ export default class CommentForm extends Component {
       date: new Date()
     };
     const bookId = process.env.NODE_ENV === 'development' ? "5d154769fe5bcb2b9c95c201" : "PROD BOOK ID"
-    fetch(`http://localhost:3001/api/books/${bookId}/comments`, {
+    //This is what's not working
+    fetch(`https://cryptic-shelf-70917.herokuapp.com/api/books/${bookId}/comments`, {
       method: "POST",
       mode: "cors", // no-cors, cors, *same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
