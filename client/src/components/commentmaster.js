@@ -13,7 +13,7 @@ class Comments_Section extends Component {
       loading: false
     };
 
-    this.addComment = this.addComment.bind(this);
+    this.setComments = this.setComments.bind(this);
   }
   // component mounting for comments
   componentDidMount() {
@@ -21,11 +21,12 @@ class Comments_Section extends Component {
     this.setState({ loading: true });
 
     // get all the comments
-    fetch("http://localhost:3001/api/books/5d0e4a6cf125fa1612b6a5fc/comments")
+    fetch("/api/books/5d0e4a6cf125fa1612b6a5fc/comments")
       .then(res => res.json())
       .then(res => {
+        const comments = Array.isArray(res) ? res : [];
         this.setState({
-          comments: res,
+          comments,
           loading: false
         });
       })
@@ -38,10 +39,13 @@ class Comments_Section extends Component {
    * Add new comment section function
    * @param {Object} comment
    */
-  addComment(comment) {
+  setComments(comment) {
+    console.log(comment);
+    const comments = Array.isArray(this.state.comments) ? this.state.comments : [];
+
     this.setState({
       loading: false,
-      comments: [comment, ...this.state.comments]
+      comments: [...comment, ...comments]
     });
   }
 
