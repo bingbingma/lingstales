@@ -63,9 +63,7 @@ class Comments_Section extends Component {
             <h6 className="text-left">Say something about this book!</h6>
             <CommentForm addComment={this.addComment} />
           </div>
-        </div>
-        <div className="row">
-          <div className="col-12 col-md-6 col-lg-8 pt-3 bg-white">
+          <div className="col-12 col-md-8 col-lg-8 pt-3 bg-white">
             <CommentList
               loading={this.state.loading}
               comments={this.state.comments}
