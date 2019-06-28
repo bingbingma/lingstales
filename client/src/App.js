@@ -1,20 +1,24 @@
 import React, { Component } from "react";
-import ControlledCarousel from "./components/carousel/carousel";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import NavBar from "./components/navbar";
+import Books from "./pages/Books";
+import Home from "./pages/Home";
+import Footer from "./components/footer/Footer";
 import "./App.css";
-import Comments_Section from "./components/commentmaster";
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        {/* NavBar section*/}
-        <NavBar />
-        {/* Carousel section*/}
-        <ControlledCarousel />
-        {/* Comments section*/}
-        <Comments_Section />
-      </div>
+      <Router>
+        <div className="App">
+          <NavBar />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/books" component={Books} />
+          </Switch>
+          <Footer />
+        </div>
+      </Router>
     );
   }
 }
