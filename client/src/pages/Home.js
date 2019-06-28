@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import image1 from "../images/Slide00.JPG";
-import image2 from "../images/Slide00.JPG";
-import image3 from "../images/Slide00.JPG";
+import image2 from "../images/elephant.png";
+import image3 from "../images/comingSoon.png";
 
 class Home extends Component {
   render() {
@@ -22,7 +22,7 @@ class Home extends Component {
                 Pinyin for pronunciation. I illustrated and wrote the story from
                 my childhood memory of the folktale. My wife, Stacy, adapted and
                 translated the Chinese version. You can read the full books for
-                free online, or buy print copies on Amazon. David
+                free online, or buy print copies on Amazon. -David
               </p>
             </div>
           </div>
@@ -33,7 +33,9 @@ class Home extends Component {
           <div className="col-md-4 col-lg-4 col-sm-12 col-12">
             <div className="card">
               <div className="card-body">
+                <a href="/books">
                 <img className="img-fluid" src={image1} alt="Book 1" />
+                </a>
                 <div className="container-fluid plabel">
                   <h6>Book 1:</h6>
                   <h5>The Emperor's Seed</h5>
