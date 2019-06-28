@@ -70,6 +70,7 @@ module.exports = {
       { comments: { $elemMatch: { _id: req.params.id } } }
     )
       .then(dbModel => {
+        console.log('DB MODEL:  ',dbModel);
         res.json(dbModel);
       })
       .catch(err => res.status(422).json(err));
@@ -81,6 +82,7 @@ module.exports = {
       { comments: { $elemMatch: { _id: req.params.id } } }
     )
       .then(dbModel => {
+        console.log('DB MODEL:  ',dbModel);
         res.json(dbModel);
       })
       .catch(err => res.status(422).json(err));
