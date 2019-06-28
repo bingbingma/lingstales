@@ -20,15 +20,11 @@ export default class CommentForm extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentDidMount() {
-    this.loadComments();
-  }
-
   // Loads all books  and sets them to this.state.books
-  loadComments = () => {
-    API.getComments()
+  loadComments = (bookID) => {
+    API.getComments(bookID)
       .then(res => {
-        this.setState({ comments: res.data });
+        this.props.setComments(res.data);
         console.log(res.data);
       })
       .catch(err => console.log(err));
@@ -36,7 +32,7 @@ export default class CommentForm extends Component {
 
   deleteComment = id => {
     API.deleteComment(id)
-      .then(res => this.loadComments())
+      .then(res => this.loadComments(id))
       .catch(err => console.log(err));
   };
 
@@ -50,6 +46,7 @@ export default class CommentForm extends Component {
       }
     });
   };
+
 
   onSubmit(e) {
     // prevent default form submission
@@ -69,9 +66,9 @@ export default class CommentForm extends Component {
       text: comment.text,
       date: new Date()
     };
-    const bookId = process.env.NODE_ENV === 'development' ? "5d154769fe5bcb2b9c95c201" : "PROD BOOK ID"
-    //This is what's not working
-    fetch(`https://cryptic-shelf-70917.herokuapp.com/api/books/${bookId}/comments`, {
+    const bookId = process.env.NODE_ENV === 'development' ? "5d154769fe5bcb2b9c95c201" : "5d155128ddab6642c0604f23"
+
+    fetch(`/api/books/${bookId}/comments`, {
       method: "POST",
       mode: "cors", // no-cors, cors, *same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -83,18 +80,12 @@ export default class CommentForm extends Component {
     })
       .then(res => res.json())
       .then(res => {
+        console.log("[DEBUG] result", res)
         if (res.error) {
           this.setState({ loading: false, error: res.error });
         } else {
           // add time return from api and push comment to parent state
-          comment.time = res.time;
-          this.props.addComment(comment);
-
-          // clear the message box
-          this.setState({
-            loading: false,
-            comment: { ...comment, text: "" }
-          });
+          this.loadComments(bookId);
         }
       })
       .catch(err => {

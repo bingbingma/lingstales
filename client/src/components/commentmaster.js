@@ -14,7 +14,7 @@ class Comments_Section extends Component {
       loading: false
     };
 
-    this.addComment = this.addComment.bind(this);
+    this.setComments = this.setComments.bind(this);
   }
   // component mounting for comments
   componentDidMount() {
@@ -22,7 +22,7 @@ class Comments_Section extends Component {
     this.setState({ loading: true });
 
     // get all the comments
-    fetch("http://localhost:3001/api/books/5d0e4a6cf125fa1612b6a5fc/comments")
+    fetch("/api/books/5d0e4a6cf125fa1612b6a5fc/comments")
       .then(res => res.json())
       .then(res => {
         this.setState({
@@ -39,7 +39,7 @@ class Comments_Section extends Component {
    * Add new comment section function
    * @param {Object} comment
    */
-  addComment(comment) {
+  setComments(comment) {
     this.setState({
       loading: false,
       comments: [comment, ...this.state.comments]
@@ -58,7 +58,7 @@ class Comments_Section extends Component {
         <div className="row">
           <div className="col-4  pt-3 border-right">
             <h6>Say something about this book!</h6>
-            <CommentForm addComment={this.addComment} />
+            <CommentForm setComments={this.setComments} />
           </div>
           <div className="col-8  pt-3 bg-white">
             <CommentList
