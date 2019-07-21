@@ -7,7 +7,7 @@ class Books extends Component {
     return (
       <div>
         <ControlledCarousel />
-        <Comments_Section />
+        {/* <Comments_Section /> */}
       </div>
     );
   }
