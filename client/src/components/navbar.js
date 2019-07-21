@@ -56,7 +56,6 @@ class NavBar extends React.Component {
               tabindex="-1"
               aria-disabled="true"
             >
-              <LoginButton />
             </a>
           </div>
         </div>
