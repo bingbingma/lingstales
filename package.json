@@ -34,5 +34,8 @@
     "react-router-dom": "^5.0.1",
     "react-slick": "^0.24.0",
     "slick-carousel": "^1.8.1"
+  },
+  "engines": {
+    "node": "20.15.1"
   }
 }
