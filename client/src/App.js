@@ -1,23 +1,25 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Home from './pages/Home';
-import Books from './pages/Books';
-import Book2 from './pages/Book2'; // Import the new Book2 component
-import NavBar from './components/navbar'; // Import the NavBar component
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import NavBar from "./components/navbar";
+import Books from "./pages/Books";
+import Home from "./pages/Home";
+import Footer from "./components/footer/Footer";
+import "./App.css";
 
-function App() {
-  return (
-    <Router>
-      <div>
-        <NavBar /> {/* Include the NavBar component */}
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/books" component={Books} />
-          <Route path="/book2" component={Book2} /> {/* Add the new route */}
-        </Switch>
-      </div>
-    </Router>
-  );
+class App extends Component {
+  render() {
+    return (
+      <Router>
+        <div className="App">
+          <NavBar />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/books" component={Books} />
+          </Switch>
+          <Footer />
+        </div>
+      </Router>
+    );
+  }
 }
-
 export default App;
