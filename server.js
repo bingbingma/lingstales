@@ -21,6 +21,7 @@ app.use(bodyParser.json())
 // app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/lingstales", { useNewUrlParser: true, useUnifiedTopology: true });
+console.log('process.env.NODE_ENV: ----->>>>>>>>', process.env.NODE_ENV)
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
