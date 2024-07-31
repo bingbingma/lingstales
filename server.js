@@ -20,7 +20,7 @@ app.use(bodyParser.json())
 // Define middleware here
 // app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/lingstales");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/lingstales", { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
