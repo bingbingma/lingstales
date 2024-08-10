@@ -7,8 +7,7 @@ class Home extends Component {
   render() {
     return (
       <div className="Home">
-        {/* //side by side view of multiple book covers */}
-
+        {/* Side by side view of multiple book covers */}
         <div className="container">
           <div className="row text-center">
             <div className="col-12">
@@ -27,14 +26,13 @@ class Home extends Component {
             </div>
           </div>
         </div>
-        {/* <!-- bootstrap NEW version -->
-      <!-- FIRST ROW --> */}
+        {/* Bootstrap new version */}
         <div className="row">
           <div className="col-md-4 col-lg-4 col-sm-12 col-12">
             <div className="card">
               <div className="card-body">
                 <a href="/books">
-                <img className="img-fluid" src={image1} alt="Book 1" />
+                  <img className="img-fluid" src={image1} alt="Book 1" />
                 </a>
                 <div className="container-fluid plabel">
                   <h6>Book 1:</h6>
@@ -46,9 +44,11 @@ class Home extends Component {
           <div className="col-md-4 col-lg-4 col-sm-12 col-12">
             <div className="card">
               <div className="card-body">
-                <img className="img-fluid" src={image2} alt="Book 2" />
+                <a href="/book2">
+                  <img className="img-fluid" src={image2} alt="Book 2" />
+                </a>
                 <div className="container-fluid plabel">
-                  <h6>Book 2 (Coming Soon!):</h6>
+                  <h6>Book 2:</h6>
                   <h5>Weighing the Elephant</h5>
                 </div>
               </div>

@@ -37,23 +37,42 @@ class NavBar extends React.Component {
                 <a className="dropdown-item" href="/books">
                   The Emperor's Seed
                 </a>
-                <a className="dropdown-item disabled" href="#">
-                  Weighing the Elephant (coming soon)
+                <a className="dropdown-item" href="/book2">
+                  Weighing the Elephant
                 </a>
               </div>
             </li>
-            <li class="nav-item">
+            <li className="nav-item dropdown">
               <a
-                class="nav-link"
-                href="https://www.amazon.com/dp/107422633X/ref=cm_sw_r_tw_dp_U_x_GpxfDbZDFJAMT"
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="amazonDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
               >
-                Amazon
+                Amazon Links
               </a>
+              <div className="dropdown-menu" aria-labelledby="amazonDropdown">
+                <a
+                  className="dropdown-item"
+                  href="https://www.amazon.com/dp/107422633X/ref=cm_sw_r_tw_dp_U_x_GpxfDbZDFJAMT"
+                >
+                  The Emperor's Seed
+                </a>
+                <a
+                  className="dropdown-item"
+                  href="https://www.amazon.com/Weighing-Elephant-Lings-Tales-Book/dp/B0D7ZNCLLZ"
+                >
+                  Weighing the Elephant
+                </a>
+              </div>
             </li>
             <a
               className="nav-item nav-link"
               href="#"
-              tabindex="-1"
+              tabIndex="-1"
               aria-disabled="true"
             >
             </a>
