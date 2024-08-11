@@ -2,4 +2,4 @@ function importAll(r) {
   return r.keys().map(r);
 }
 
-export default importAll(require.context('./', false, /\.(JPG)$/));
+export default importAll(require.context('./', false, /\.(jpe?g)$/i));
