@@ -49,12 +49,9 @@ function master(c, level) {
   return g;
 }
 
-// The "true" note: a soft, bell-like piano tone built from decaying partials.
-export function playNote(freq, duration = 1.4) {
-  const c = getAudioContext();
-  if (!c) return wait(duration * 1000);
-  const t = c.currentTime;
-  const out = master(c, 0.45);
+// One strike of the "true" note: a soft, bell-like piano tone built from
+// decaying partials.
+function scheduleNoteHit(c, out, t, freq, duration) {
   const partials = [
     [1, 1.0],
     [2, 0.45],
@@ -78,7 +75,23 @@ export function playNote(freq, duration = 1.4) {
     osc.start(t);
     osc.stop(t + duration + 0.1);
   });
-  return wait(duration * 1000 + 100);
+}
+
+// The "true" note, played twice ("ding-ding") to mirror the monkey's
+// "hoo-hoo": a short first strike, then a longer one that rings out.
+const NOTE_FIRST = 0.55;
+const NOTE_GAP = 0.08;
+const NOTE_SECOND = 1.3;
+
+export function playNote(freq) {
+  const c = getAudioContext();
+  const total = NOTE_FIRST + NOTE_GAP + NOTE_SECOND;
+  if (!c) return wait(total * 1000);
+  const t = c.currentTime;
+  const out = master(c, 0.45);
+  scheduleNoteHit(c, out, t, freq, NOTE_FIRST);
+  scheduleNoteHit(c, out, t + NOTE_FIRST + NOTE_GAP, freq, NOTE_SECOND);
+  return wait(total * 1000 + 100);
 }
 
 // One "hoo" at a given pitch: a breathy attack, a little pitch scoop and vibrato.

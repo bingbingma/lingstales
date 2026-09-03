@@ -25,6 +25,42 @@ const STEP_Y = 58;
 
 const IDLE_MESSAGE = "Tap a monkey to hear it sing, or press Start to play!";
 
+// Difficulty: how many monkeys are on the tree. Easier levels hide a random
+// set of monkeys, so there are fewer voices to tell apart.
+const LEVELS = [3, 4, 5, 6, 7];
+const DEFAULT_LEVEL = 7;
+const LEVEL_STORAGE_KEY = "earMonkeysLevel";
+
+function loadLevel() {
+  try {
+    const saved = parseInt(window.localStorage.getItem(LEVEL_STORAGE_KEY), 10);
+    if (LEVELS.indexOf(saved) !== -1) return saved;
+  } catch (e) {
+    // Storage may be unavailable (private mode, etc.); fall through.
+  }
+  return DEFAULT_LEVEL;
+}
+
+function saveLevel(level) {
+  try {
+    window.localStorage.setItem(LEVEL_STORAGE_KEY, String(level));
+  } catch (e) {
+    // Ignore: the level just won't be remembered next visit.
+  }
+}
+
+// A random set of `count` monkey indexes, in branch order.
+function pickActive(count) {
+  const pool = NOTES.map((_, i) => i);
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = pool[i];
+    pool[i] = pool[j];
+    pool[j] = tmp;
+  }
+  return pool.slice(0, Math.min(count, pool.length)).sort((a, b) => a - b);
+}
+
 function branchY(i) {
   return FIRST_Y - i * STEP_Y;
 }
@@ -61,6 +97,8 @@ function EarMonkeysGame() {
   const [singing, setSinging] = useState(null);
   const [wobbling, setWobbling] = useState(null);
   const [confetti, setConfetti] = useState([]);
+  const [level, setLevel] = useState(loadLevel);
+  const [active, setActive] = useState(() => pickActive(loadLevel()));
 
   // Bumped on every reset/new round so stale async flows stop touching state.
   const runRef = useRef(0);
@@ -68,6 +106,8 @@ function EarMonkeysGame() {
   const phaseRef = useRef("idle");
   const busyRef = useRef(false);
   const mountedRef = useRef(true);
+  const levelRef = useRef(level);
+  const activeRef = useRef(active);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -85,17 +125,23 @@ function EarMonkeysGame() {
 
   const alive = (run) => mountedRef.current && runRef.current === run;
 
-  const pickTarget = () => {
-    let next = Math.floor(Math.random() * NOTES.length);
-    if (NOTES.length > 1 && next === targetRef.current) {
-      next = (next + 1 + Math.floor(Math.random() * (NOTES.length - 1))) % NOTES.length;
-    }
-    return next;
+  const applyActive = (indexes) => {
+    activeRef.current = indexes;
+    setActive(indexes);
+  };
+
+  // Pick the next note from the monkeys on the tree, avoiding a repeat.
+  const pickTarget = (indexes) => {
+    const choices =
+      indexes.length > 1 ? indexes.filter((i) => i !== targetRef.current) : indexes;
+    return choices[Math.floor(Math.random() * choices.length)];
   };
 
   const startRound = async () => {
     const run = ++runRef.current;
-    const next = pickTarget();
+    const indexes = pickActive(levelRef.current);
+    applyActive(indexes);
+    const next = pickTarget(indexes);
     targetRef.current = next;
     setTarget(next);
     setResult(null);
@@ -137,8 +183,29 @@ function EarMonkeysGame() {
     setSinging(null);
     setWobbling(null);
     setConfetti([]);
+    applyActive(pickActive(levelRef.current));
     setPhaseSafe("idle");
     setMessage(IDLE_MESSAGE);
+  };
+
+  const handleLevelChange = (next) => {
+    if (next === levelRef.current) return;
+    levelRef.current = next;
+    setLevel(next);
+    saveLevel(next);
+    if (phaseRef.current === "idle") {
+      applyActive(pickActive(next));
+      return;
+    }
+    // Mid-game: drop the current round and start a fresh one at the new size.
+    runRef.current += 1;
+    busyRef.current = false;
+    stopSpeaking();
+    setResult(null);
+    setSinging(null);
+    setWobbling(null);
+    setConfetti([]);
+    startRound();
   };
 
   const practiceHoo = async (i) => {
@@ -154,6 +221,7 @@ function EarMonkeysGame() {
   };
 
   const handleMonkeyClick = async (i) => {
+    if (activeRef.current.indexOf(i) === -1) return;
     if (phaseRef.current === "idle") {
       practiceHoo(i);
       return;
@@ -246,6 +314,26 @@ function EarMonkeysGame() {
         </button>
       </div>
 
+      <div className="em-levels" role="group" aria-label="How many monkeys">
+        <span className="em-levels__label">Monkeys on the tree:</span>
+        <div className="em-levels__buttons">
+          {LEVELS.map((n) => (
+            <button
+              key={n}
+              type="button"
+              className={`em-level ${level === n ? "em-level--on" : ""}`}
+              aria-pressed={level === n}
+              onClick={() => handleLevelChange(n)}
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+        <span className="em-levels__note">
+          {level === NOTES.length ? "all seven, hardest" : "fewer is easier"}
+        </span>
+      </div>
+
       <div className={`em-message em-message--${mood}`} aria-live="polite">
         {message}
       </div>
@@ -329,6 +417,7 @@ function EarMonkeysGame() {
               x={monkeyX(i)}
               y={branchY(i)}
               note={note}
+              hidden={active.indexOf(i) === -1}
               singing={singing === i}
               bouncing={singing === i}
               wobbling={wobbling === i}
@@ -381,7 +470,8 @@ function EarMonkeysGame() {
 
       <p className="em-hint">
         The monkeys sit on their branches from low A to high G, just like notes
-        climbing a staff.
+        climbing a staff. On easier levels a few monkeys hide, and a new bunch
+        comes out to play each round.
       </p>
     </div>
   );
