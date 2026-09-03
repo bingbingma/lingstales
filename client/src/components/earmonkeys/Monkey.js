@@ -4,7 +4,17 @@ const FACE = "#ffe8c9";
 const INK = "#5b3a1e";
 
 // A cute SVG monkey. The origin (0, 0) is where it sits on its branch.
-function Monkey({ x, y, note, singing, bouncing, wobbling, dimmed, onClick }) {
+function Monkey({
+  x,
+  y,
+  note,
+  hidden,
+  singing,
+  bouncing,
+  wobbling,
+  dimmed,
+  onClick,
+}) {
   const { color, letter, name } = note;
   const classes = [
     "em-monkey",
@@ -12,6 +22,7 @@ function Monkey({ x, y, note, singing, bouncing, wobbling, dimmed, onClick }) {
     bouncing ? "em-monkey--bounce" : "",
     wobbling ? "em-monkey--wobble" : "",
     dimmed ? "em-monkey--dimmed" : "",
+    hidden ? "em-monkey--hidden" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -22,9 +33,11 @@ function Monkey({ x, y, note, singing, bouncing, wobbling, dimmed, onClick }) {
       transform={`translate(${x} ${y})`}
       onClick={onClick}
       role="button"
-      tabIndex={0}
+      tabIndex={hidden ? -1 : 0}
+      aria-hidden={hidden ? "true" : undefined}
       aria-label={`${name} the ${letter} monkey`}
       onKeyDown={(e) => {
+        if (hidden) return;
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           onClick();

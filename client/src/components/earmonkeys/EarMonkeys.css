@@ -103,6 +103,58 @@
   padding: 8px 20px;
 }
 
+.em-levels {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin: 0 auto 12px;
+  font-weight: 700;
+  font-size: 16px;
+  color: #6b5b4b;
+}
+
+.em-levels__buttons {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.em-level {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 3px solid #ffd23f;
+  background: #fff;
+  color: #6b4423;
+  font-family: "Lato", sans-serif;
+  font-weight: 900;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
+  transition: transform 0.1s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.em-level:hover {
+  transform: translateY(-2px);
+}
+
+.em-level--on {
+  background: #ffd23f;
+  border-color: #ff9f1c;
+  transform: scale(1.1);
+}
+
+.em-level--on:hover {
+  transform: scale(1.1);
+}
+
+.em-levels__note {
+  font-weight: 400;
+  font-size: 14px;
+  color: #7a6a58;
+}
+
 .em-message {
   min-height: 46px;
   margin: 0 auto 12px;
@@ -153,6 +205,12 @@
 .em-monkey {
   cursor: pointer;
   outline: none;
+  transition: opacity 0.35s ease;
+}
+
+.em-monkey--hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .em-scene--locked .em-monkey {
@@ -294,5 +352,11 @@
   .em-btn--start {
     font-size: 20px;
     padding: 12px 34px;
+  }
+
+  .em-level {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
   }
 }
