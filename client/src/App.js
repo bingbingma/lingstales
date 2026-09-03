@@ -4,6 +4,7 @@ import NavBar from "./components/navbar";
 import Books from "./pages/Books";
 import Home from "./pages/Home";
 import Book2 from "./pages/Book2"; // Import the new Book2 component
+import EarMonkeys from "./pages/EarMonkeys";
 import Footer from "./components/footer/Footer"; // Ensure this path is correct
 import "./App.css"; // Import the App.css file for styling
 
@@ -17,6 +18,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/books" component={Books} />
             <Route exact path="/book2" component={Book2} /> {/* Add the new route */}
+            <Route exact path="/ear-monkeys" component={EarMonkeys} />
           </Switch>
           <Footer />
         </div>
