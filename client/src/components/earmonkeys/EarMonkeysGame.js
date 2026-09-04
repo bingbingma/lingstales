@@ -10,6 +10,7 @@ import {
   playAww,
   speak,
   stopSpeaking,
+  stopAllSounds,
   wait,
 } from "./audio";
 import "./EarMonkeys.css";
@@ -167,7 +168,7 @@ function EarMonkeysGame() {
     const run = ++runRef.current;
     introThenStartRef.current = thenStart;
     busyRef.current = false;
-    stopSpeaking();
+    stopAllSounds();
     setResult(null);
     setWobbling(null);
     setConfetti([]);
@@ -207,8 +208,17 @@ function EarMonkeysGame() {
     }
   };
 
-  const handleSkipIntro = () => {
+  const handleSkipIntro = async () => {
     if (phaseRef.current !== "intro") return;
+    // Cancel the intro flow and silence whatever note or hoo is mid-air,
+    // so the first round's reference note plays on its own.
+    runRef.current += 1;
+    stopAllSounds();
+    setSinging(null);
+    setBouncing(null);
+    setPhaseSafe("playing");
+    await wait(120);
+    if (!mountedRef.current) return;
     finishIntro(introThenStartRef.current);
   };
 
@@ -241,7 +251,7 @@ function EarMonkeysGame() {
   const handleReset = () => {
     runRef.current += 1;
     busyRef.current = false;
-    stopSpeaking();
+    stopAllSounds();
     targetRef.current = null;
     setTarget(null);
     setRight(0);
@@ -271,7 +281,7 @@ function EarMonkeysGame() {
     // Mid-game: drop the current round and start a fresh one at the new size.
     runRef.current += 1;
     busyRef.current = false;
-    stopSpeaking();
+    stopAllSounds();
     setResult(null);
     setSinging(null);
     setWobbling(null);
