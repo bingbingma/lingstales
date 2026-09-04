@@ -97,6 +97,28 @@
   background: #4d96ff;
 }
 
+.em-btn--hearall {
+  background: #9b5de5;
+  margin-left: 12px;
+}
+
+.em-btn--skip {
+  background: #b8a99a;
+}
+
+.em-message--intro {
+  border-style: solid;
+  border-color: #9b5de5;
+  background: #f4edff;
+}
+
+.em-message--letter {
+  font-size: 40px;
+  line-height: 1;
+  padding: 8px 18px;
+  letter-spacing: 4px;
+}
+
 .em-btn--reset {
   background: #ff9f1c;
   font-size: 16px;

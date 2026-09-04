@@ -94,6 +94,17 @@ export function playNote(freq) {
   return wait(total * 1000 + 100);
 }
 
+// A single, shorter strike of the note, used by the A-to-G intro.
+export function playNoteShort(freq) {
+  const c = getAudioContext();
+  const duration = 0.9;
+  if (!c) return wait(duration * 1000);
+  const t = c.currentTime;
+  const out = master(c, 0.45);
+  scheduleNoteHit(c, out, t, freq, duration);
+  return wait(duration * 1000 + 60);
+}
+
 // One "hoo" at a given pitch: a breathy attack, a little pitch scoop and vibrato.
 function scheduleHoo(c, out, t, freq, len) {
   const voice = c.createGain();
