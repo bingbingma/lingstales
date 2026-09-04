@@ -42,11 +42,42 @@ function getNoise(c) {
   return src;
 }
 
-function master(c, level) {
+// Every sound plays through its own output gain, tracked here so that
+// stopAllSounds() can silence whatever is still ringing (for example when
+// the intro is skipped or the game is reset mid-sound).
+const activeOutputs = new Set();
+
+function master(c, level, ttlMs) {
   const g = c.createGain();
   g.gain.value = level;
   g.connect(c.destination);
+  activeOutputs.add(g);
+  setTimeout(() => activeOutputs.delete(g), (ttlMs || 3000) + 300);
   return g;
+}
+
+// Fade out and disconnect everything currently playing, and stop speech.
+export function stopAllSounds() {
+  stopSpeaking();
+  if (!ctx) return;
+  const t = ctx.currentTime;
+  activeOutputs.forEach((g) => {
+    try {
+      g.gain.cancelScheduledValues(t);
+      g.gain.setValueAtTime(g.gain.value, t);
+      g.gain.linearRampToValueAtTime(0, t + 0.03);
+      setTimeout(() => {
+        try {
+          g.disconnect();
+        } catch (e) {
+          // Already disconnected.
+        }
+      }, 120);
+    } catch (e) {
+      // Node already gone; nothing to silence.
+    }
+  });
+  activeOutputs.clear();
 }
 
 // One strike of the "true" note: a soft, bell-like piano tone built from
@@ -88,10 +119,21 @@ export function playNote(freq) {
   const total = NOTE_FIRST + NOTE_GAP + NOTE_SECOND;
   if (!c) return wait(total * 1000);
   const t = c.currentTime;
-  const out = master(c, 0.45);
+  const out = master(c, 0.45, total * 1000);
   scheduleNoteHit(c, out, t, freq, NOTE_FIRST);
   scheduleNoteHit(c, out, t + NOTE_FIRST + NOTE_GAP, freq, NOTE_SECOND);
   return wait(total * 1000 + 100);
+}
+
+// A single, shorter strike of the note, used by the A-to-G intro.
+export function playNoteShort(freq) {
+  const c = getAudioContext();
+  const duration = 0.9;
+  if (!c) return wait(duration * 1000);
+  const t = c.currentTime;
+  const out = master(c, 0.45, duration * 1000);
+  scheduleNoteHit(c, out, t, freq, duration);
+  return wait(duration * 1000 + 60);
 }
 
 // One "hoo" at a given pitch: a breathy attack, a little pitch scoop and vibrato.
@@ -163,7 +205,7 @@ export function playHoo(freq) {
   const total = 0.32 + 0.09 + 0.55;
   if (!c) return wait(total * 1000);
   const t = c.currentTime;
-  const out = master(c, 0.5);
+  const out = master(c, 0.5, total * 1000);
   scheduleHoo(c, out, t, freq, 0.32);
   scheduleHoo(c, out, t + 0.32 + 0.09, freq, 0.55);
   return wait(total * 1000 + 80);
@@ -174,7 +216,7 @@ export function playYay() {
   const c = getAudioContext();
   if (!c) return wait(900);
   const t = c.currentTime;
-  const out = master(c, 0.35);
+  const out = master(c, 0.35, 1100);
   const steps = [523.25, 659.25, 783.99, 1046.5];
   steps.forEach((f, i) => {
     const start = t + i * 0.09;
@@ -214,7 +256,7 @@ export function playAww() {
   const c = getAudioContext();
   if (!c) return wait(1100);
   const t = c.currentTime;
-  const out = master(c, 0.3);
+  const out = master(c, 0.3, 1500);
   const glides = [
     [330, 300, 0, 0.38],
     [290, 250, 0.42, 0.38],

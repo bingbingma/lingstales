@@ -4,11 +4,13 @@ import {
   NOTES,
   getAudioContext,
   playNote,
+  playNoteShort,
   playHoo,
   playYay,
   playAww,
   speak,
   stopSpeaking,
+  stopAllSounds,
   wait,
 } from "./audio";
 import "./EarMonkeys.css";
@@ -24,6 +26,7 @@ const FIRST_Y = 450;
 const STEP_Y = 58;
 
 const IDLE_MESSAGE = "Tap a monkey to hear it sing, or press Start to play!";
+const ALL_MONKEYS = NOTES.map((_, i) => i);
 
 // Difficulty: how many monkeys are on the tree. Easier levels hide a random
 // set of monkeys, so there are fewer voices to tell apart.
@@ -88,13 +91,14 @@ function makeConfetti(seed) {
 }
 
 function EarMonkeysGame() {
-  const [phase, setPhase] = useState("idle"); // idle | playing | guess | feedback
+  const [phase, setPhase] = useState("idle"); // idle | intro | playing | guess | feedback
   const [target, setTarget] = useState(null);
   const [right, setRight] = useState(0);
   const [wrong, setWrong] = useState(0);
   const [message, setMessage] = useState(IDLE_MESSAGE);
   const [result, setResult] = useState(null); // right | wrong | null
   const [singing, setSinging] = useState(null);
+  const [bouncing, setBouncing] = useState(null);
   const [wobbling, setWobbling] = useState(null);
   const [confetti, setConfetti] = useState([]);
   const [level, setLevel] = useState(loadLevel);
@@ -108,6 +112,9 @@ function EarMonkeysGame() {
   const mountedRef = useRef(true);
   const levelRef = useRef(level);
   const activeRef = useRef(active);
+  // The A-to-G intro plays once per visit (and again after Reset).
+  const introPlayedRef = useRef(false);
+  const introThenStartRef = useRef(true);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -146,6 +153,7 @@ function EarMonkeysGame() {
     setTarget(next);
     setResult(null);
     setSinging(null);
+    setBouncing(null);
     setWobbling(null);
     setPhaseSafe("playing");
     setMessage("Listen...");
@@ -155,9 +163,79 @@ function EarMonkeysGame() {
     setMessage("Which monkey sings that note?");
   };
 
+  // Intro: every monkey from A to G, each with its note and then its voice.
+  const runIntro = async (thenStart) => {
+    const run = ++runRef.current;
+    introThenStartRef.current = thenStart;
+    busyRef.current = false;
+    stopAllSounds();
+    setResult(null);
+    setWobbling(null);
+    setConfetti([]);
+    applyActive(ALL_MONKEYS);
+    setPhaseSafe("intro");
+    setMessage("Meet the monkeys! Here is every note from A to G.");
+    await wait(900);
+    if (!alive(run)) return;
+    for (let i = 0; i < NOTES.length; i++) {
+      const note = NOTES[i];
+      setMessage(`${note.letter}`);
+      setBouncing(i);
+      await playNoteShort(note.freq);
+      if (!alive(run)) return;
+      setSinging(i);
+      await playHoo(note.freq);
+      if (!alive(run)) return;
+      setSinging(null);
+      setBouncing(null);
+      await wait(250);
+      if (!alive(run)) return;
+    }
+    finishIntro(thenStart);
+  };
+
+  const finishIntro = (thenStart) => {
+    introPlayedRef.current = true;
+    setSinging(null);
+    setBouncing(null);
+    if (thenStart) {
+      startRound();
+    } else {
+      runRef.current += 1;
+      applyActive(pickActive(levelRef.current));
+      setPhaseSafe("idle");
+      setMessage(IDLE_MESSAGE);
+    }
+  };
+
+  const handleSkipIntro = async () => {
+    if (phaseRef.current !== "intro") return;
+    // Cancel the intro flow and silence whatever note or hoo is mid-air,
+    // so the first round's reference note plays on its own.
+    const run = ++runRef.current;
+    stopAllSounds();
+    setSinging(null);
+    setBouncing(null);
+    setPhaseSafe("playing");
+    await wait(120);
+    // A Reset or level change during the pause takes over; don't finish twice.
+    if (!alive(run)) return;
+    finishIntro(introThenStartRef.current);
+  };
+
   const handleStart = () => {
     getAudioContext();
-    startRound();
+    if (!introPlayedRef.current) {
+      runIntro(true);
+    } else {
+      startRound();
+    }
+  };
+
+  const handleHearAll = () => {
+    if (phaseRef.current !== "idle" || busyRef.current) return;
+    getAudioContext();
+    runIntro(false);
   };
 
   const handleReplay = async () => {
@@ -174,15 +252,17 @@ function EarMonkeysGame() {
   const handleReset = () => {
     runRef.current += 1;
     busyRef.current = false;
-    stopSpeaking();
+    stopAllSounds();
     targetRef.current = null;
     setTarget(null);
     setRight(0);
     setWrong(0);
     setResult(null);
     setSinging(null);
+    setBouncing(null);
     setWobbling(null);
     setConfetti([]);
+    introPlayedRef.current = false;
     applyActive(pickActive(levelRef.current));
     setPhaseSafe("idle");
     setMessage(IDLE_MESSAGE);
@@ -197,10 +277,12 @@ function EarMonkeysGame() {
       applyActive(pickActive(next));
       return;
     }
+    // During the intro all monkeys stay out; the new size applies afterwards.
+    if (phaseRef.current === "intro") return;
     // Mid-game: drop the current round and start a fresh one at the new size.
     runRef.current += 1;
     busyRef.current = false;
-    stopSpeaking();
+    stopAllSounds();
     setResult(null);
     setSinging(null);
     setWobbling(null);
@@ -231,21 +313,29 @@ function EarMonkeysGame() {
     const run = runRef.current;
     const answer = targetRef.current;
     const note = NOTES[answer];
+    const picked = NOTES[i];
     setPhaseSafe("feedback");
+
+    // The monkey you tapped always sings first, so you hear what you chose.
+    setMessage(`${picked.name} says hoo-hoo!`);
+    setSinging(i);
+    await playHoo(picked.freq);
+    if (!alive(run)) return;
+    setSinging(null);
+    await wait(150);
+    if (!alive(run)) return;
 
     if (i === answer) {
       setRight((r) => r + 1);
       setResult("right");
       setMessage(`Yay! It was ${note.letter}!`);
       setConfetti(makeConfetti(Date.now()));
-      setSinging(i);
+      setBouncing(i);
       speak("Yay!");
       await playYay();
       if (!alive(run)) return;
-      await playHoo(note.freq);
-      if (!alive(run)) return;
-      setSinging(null);
-      await wait(600);
+      setBouncing(null);
+      await wait(500);
       if (!alive(run)) return;
       startRound();
     } else {
@@ -270,6 +360,7 @@ function EarMonkeysGame() {
   };
 
   const canClickMonkeys = phase === "idle" || phase === "guess";
+  const showLetterBadge = phase === "intro";
   const mood = result || phase;
 
   return (
@@ -334,7 +425,10 @@ function EarMonkeysGame() {
         </span>
       </div>
 
-      <div className={`em-message em-message--${mood}`} aria-live="polite">
+      <div
+        className={`em-message em-message--${mood} ${showLetterBadge && message.length === 1 ? "em-message--letter" : ""}`}
+        aria-live="polite"
+      >
         {message}
       </div>
 
@@ -419,7 +513,7 @@ function EarMonkeysGame() {
               note={note}
               hidden={active.indexOf(i) === -1}
               singing={singing === i}
-              bouncing={singing === i}
+              bouncing={singing === i || bouncing === i}
               wobbling={wobbling === i}
               dimmed={
                 phase === "feedback" && result === "wrong" && target !== i && wobbling !== i
@@ -452,8 +546,18 @@ function EarMonkeysGame() {
 
       <div className="em-controls">
         {phase === "idle" && (
-          <button type="button" className="em-btn em-btn--start" onClick={handleStart}>
-            ▶ Start
+          <React.Fragment>
+            <button type="button" className="em-btn em-btn--start" onClick={handleStart}>
+              ▶ Start
+            </button>
+            <button type="button" className="em-btn em-btn--hearall" onClick={handleHearAll}>
+              🎵 Hear A to G
+            </button>
+          </React.Fragment>
+        )}
+        {phase === "intro" && (
+          <button type="button" className="em-btn em-btn--skip" onClick={handleSkipIntro}>
+            ⏭ Skip intro
           </button>
         )}
         {phase === "guess" && (
