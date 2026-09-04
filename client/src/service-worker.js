@@ -154,9 +154,51 @@ self.addEventListener("install", (event) => {
   event.waitUntil(Promise.race([warm, timeout]));
 });
 
-// Let the page ask a freshly installed worker to take over right away.
+// Which runtime cache a URL belongs in, or null if it is not ours to cache.
+function cacheNameFor(urlString) {
+  let url;
+  try {
+    url = new URL(urlString, self.location.href);
+  } catch (e) {
+    return null;
+  }
+  if (url.origin === self.location.origin) {
+    return /\.(?:png|jpe?g|gif|webp|svg|ico)$/i.test(url.pathname) ? IMAGE_CACHE : null;
+  }
+  if (url.hostname === "fonts.gstatic.com") return FONT_FILE_CACHE;
+  if (CDN_HOSTS.indexOf(url.hostname) !== -1) return CDN_CACHE;
+  return null;
+}
+
+// Files the page had already loaded before this worker took control (for
+// example the book images on a first visit) are sent here by the page so
+// they get cached too. Anything already cached is skipped.
+async function cacheAlreadyLoaded(urls) {
+  const byCache = {};
+  (urls || []).forEach((u) => {
+    const name = cacheNameFor(u);
+    if (!name) return;
+    if (!byCache[name]) byCache[name] = [];
+    if (byCache[name].indexOf(u) === -1) byCache[name].push(u);
+  });
+  await Promise.all(
+    Object.keys(byCache).map(async (name) => {
+      const cache = await caches.open(name);
+      const missing = [];
+      for (const u of byCache[name]) {
+        const hit = await cache.match(u);
+        if (!hit) missing.push(u);
+      }
+      await warmCache(name, missing);
+    })
+  );
+}
+
 self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
+  if (!event.data) return;
+  if (event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
+  } else if (event.data.type === "CACHE_URLS") {
+    event.waitUntil(cacheAlreadyLoaded(event.data.urls));
   }
 });

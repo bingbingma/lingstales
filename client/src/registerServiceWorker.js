@@ -43,10 +43,36 @@ export default function register() {
   }
 }
 
+// Files this page has already loaded (images, CDN scripts and styles) were
+// fetched before the service worker could see them. Send their URLs to the
+// worker so they are cached and the page still works offline next time.
+function sendLoadedAssetsToWorker() {
+  if (!navigator.serviceWorker) return;
+  navigator.serviceWorker.ready.then(registration => {
+    const worker = registration.active;
+    if (!worker) return;
+    const collect = () => {
+      const urls = [];
+      const add = url => {
+        if (url && urls.indexOf(url) === -1) urls.push(url);
+      };
+      if (window.performance && performance.getEntriesByType) {
+        performance.getEntriesByType("resource").forEach(entry => add(entry.name));
+      }
+      Array.prototype.forEach.call(document.images, img => add(img.currentSrc || img.src));
+      worker.postMessage({ type: "CACHE_URLS", urls });
+    };
+    collect();
+    // A second pass catches images that were still loading the first time.
+    setTimeout(collect, 5000);
+  });
+}
+
 function registerValidSW(swUrl) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
+      sendLoadedAssetsToWorker();
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         installingWorker.onstatechange = () => {
