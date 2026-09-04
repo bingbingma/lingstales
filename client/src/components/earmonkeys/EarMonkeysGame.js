@@ -212,13 +212,14 @@ function EarMonkeysGame() {
     if (phaseRef.current !== "intro") return;
     // Cancel the intro flow and silence whatever note or hoo is mid-air,
     // so the first round's reference note plays on its own.
-    runRef.current += 1;
+    const run = ++runRef.current;
     stopAllSounds();
     setSinging(null);
     setBouncing(null);
     setPhaseSafe("playing");
     await wait(120);
-    if (!mountedRef.current) return;
+    // A Reset or level change during the pause takes over; don't finish twice.
+    if (!alive(run)) return;
     finishIntro(introThenStartRef.current);
   };
 
