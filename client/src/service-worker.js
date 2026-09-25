@@ -10,11 +10,15 @@ import { ExpirationPlugin } from "workbox-expiration";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import {
   cleanupOutdatedCaches,
-  createHandlerBoundToURL,
+  matchPrecache,
   precacheAndRoute,
 } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
-import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
+import {
+  CacheFirst,
+  NetworkOnly,
+  StaleWhileRevalidate,
+} from "workbox-strategies";
 
 const CDN_CACHE = "cdn-assets-v1";
 const FONT_FILE_CACHE = "google-font-files-v1";
@@ -46,15 +50,25 @@ cleanupOutdatedCaches();
 const isImage = (entry) => /\.(?:png|jpe?g|gif|webp|svg)$/i.test(entry.url);
 precacheAndRoute(self.__WB_MANIFEST.filter((entry) => !isImage(entry)));
 
-// Serve index.html for in-app navigations (/, /books, /ear-monkeys, ...),
-// so client-side routes open offline too.
+// In-app navigations (/, /books, /ear-monkeys, ...) go to the network first:
+// the server adds each page's title, description and canonical tags. Offline
+// (or after 3 s with no answer) fall back to the precached index.html, which
+// always matches the precached JS, so every route still opens.
 const fileExtensionRegexp = new RegExp("/[^/?]+\\.[^/]+$");
 registerRoute(({ request, url }) => {
   if (request.mode !== "navigate") return false;
   if (url.pathname.startsWith("/_")) return false;
   if (url.pathname.match(fileExtensionRegexp)) return false;
   return true;
-}, createHandlerBoundToURL(process.env.PUBLIC_URL + "/index.html"));
+}, new NetworkOnly({
+  networkTimeoutSeconds: 3,
+  plugins: [
+    {
+      handlerDidError: () =>
+        matchPrecache(process.env.PUBLIC_URL + "/index.html"),
+    },
+  ],
+}));
 
 // Same-origin images: hashed filenames never change, so cache-first.
 registerRoute(
