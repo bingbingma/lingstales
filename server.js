@@ -48,7 +48,16 @@ console.log('process.env.NODE_ENV: ----->>>>>>>>', process.env.NODE_ENV)
 // Serve up static assets (usually on heroku)
 // index: false so "/" falls through to the page handler below, which adds
 // the page's meta tags and crawlable content.
+// /index.html itself stays reachable (the service worker precaches it as the
+// offline shell), so mark it as a non-indexable copy of the home page.
 if (isProduction) {
+  app.get("/index.html", (req, res, next) => {
+    res.set({
+      Link: `<${seo.SITE_URL}/>; rel="canonical"`,
+      "X-Robots-Tag": "noindex",
+    });
+    next();
+  });
   app.use(express.static("client/build", { index: false }));
 }
 
